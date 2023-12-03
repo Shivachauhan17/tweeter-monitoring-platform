@@ -1,0 +1,89 @@
+@mixin respond-to($breakpoint) {
+    @media screen and (max-width: $breakpoint) {
+      @content;
+    }
+  }
+
+.lspage{
+    height: 50vh;
+
+    &__lsBlock{
+        color: $primary-color;
+        height: 40vh;
+        width: 20vw;
+        background: $third-color;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        @include respond-to($tab-screen){
+            width: 40vw;
+        }
+
+        @include respond-to($mobile-screen){
+        width: 70vw;
+        }
+
+        border: 2px solid $primary-color;
+        
+    }
+
+    &__buttons{
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+    }
+
+    &__logo{
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        top:0;
+        left:2px;
+
+        &__img{
+            height: 55px;
+            width: 55px;
+        }
+        &__title{
+            font-family: "Courier New", Courier, monospace;
+            position: relative;
+            display: inline-block;
+            &::after,&::before{
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+
+            &::before{
+                background: $secondary-color;
+                border-left: 1px solid black;
+                animation: typewriter 2s ease-in-out forwards infinite;
+            }
+        }
+    }
+    
+}
+
+.loginSignupPage{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+@keyframes typewriter{
+    to{
+        left:100%;
+    }
+}

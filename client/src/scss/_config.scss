@@ -1,0 +1,18 @@
+$primary-color:#6F00FF;
+$third-color:rgb(233, 232, 232);
+$secondary-color:white;
+
+//devices widths
+$mobile-screen:400px;
+$tab-screen:1050px;
+
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@mixin transition-ease{
+    transition: all 0.6s ease-in-out;
+}
