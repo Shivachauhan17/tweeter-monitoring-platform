@@ -1,6 +1,6 @@
 import React,{memo} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from '../assets/logo.jpg';
+import Logo from '../components/Logo'; 
 
 const LoginSignup:React.FC=()=>{
 
@@ -10,10 +10,7 @@ const LoginSignup:React.FC=()=>{
         <div className="loginSignupPage">
             
             <div className="lspage">
-                <div className="lspage__logo">
-                    <img className="lspage__logo__img" src={logo}/>
-                    <h2 className="lspage__logo__title">JodView</h2>
-                </div>
+                <Logo/>
                 <div className="lspage__lsBlock ">
                         <div className="">
                             <h3 className="">Login To Profile</h3>

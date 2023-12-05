@@ -1,7 +1,7 @@
 import {combineReducers,Reducer} from "redux";
 import userReducer,{userState} from './userReducer';
 
-interface RootState {
+export interface RootState {
     user: userState // Add more properties if you have additional reducers
   }
 
