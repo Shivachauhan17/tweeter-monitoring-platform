@@ -5,34 +5,29 @@ import User from '../models/user';
 // import { json } from 'body-parser';
 import { genPassword} from '../lib/passwordUtils';
 import {IUser} from '../models/user';
+import passport from 'passport';
 
-interface reqUser extends IUser{
-    _id:string,
-    __v:number
-}
-interface CustomRequest extends Request {
-    user?: reqUser;
-  }
+
+
 
 
 const mainRoute={
 
-    home:(req:CustomRequest,res:Response,next:NextFunction)=>{
+    home:(req:Request,res:Response,next:NextFunction)=>{
         try{
             if(req.user!==null && req.user!==undefined){
-            res.json({user:req.user.username})
+            return res.status(200).json({user:(req.user as IUser).username});
             }
-            else{
-            res.json({user:""})
+            return res.status(200).json({user:""});
             }
-        }
+        
         catch(err){
             console.log(err);
-            res.json({user:""});
+            return res.status(500).json({user:""});
         }
     },
 
-    postSignup:async(req:CustomRequest,res:Response,next:NextFunction)=>{
+    postSignup:async(req:Request,res:Response,next:NextFunction)=>{
         try{
             const validationErrors:string[]=[];
             if(req.body.password.length<8){
@@ -63,13 +58,23 @@ const mainRoute={
                 password:hash,
                 salt:salt,
             });
-            await newUser.save()
+            await newUser.save();
             return res.json({error:null,user:req.body.username})
         }
         catch(err){
             console.log("error in postSignup:",err);
             return res.json({error:"some unexpacted error",user:null})
         }
+    },
+
+    login:passport.authenticate('local', {successRedirect:"/successLogin",failureRedirect:"/failureLogin"}),
+
+    successRedirect:(req:Request,res:Response,next:NextFunction)=>{
+        res.status(200).json({user:(req.user as IUser).username})
+    },
+
+    failureRedirect:(req:Request,res:Response,next:NextFunction)=>{
+        res.status(500).json({user:null})
     }
 
 }

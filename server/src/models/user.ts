@@ -9,7 +9,7 @@ export interface IUser extends Document{
 
 
 const UserSchema:Schema=new Schema({
-    email:{type:String, unique:true},
+    email:{type:String},
     username:{type:String,required:true, unique:true},
     password:{type:String,default:null, unique:true},
     salt:{type:String,default:null, unique:true}

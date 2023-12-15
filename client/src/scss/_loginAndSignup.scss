@@ -67,10 +67,15 @@
 
             &::before{
                 background: $secondary-color;
-                border-left: 1px solid black;
+                border-left: 1px solid $primary-color;
                 animation: typewriter 2s ease-in-out forwards infinite;
             }
         }
+    }
+
+    &__logo__title{
+        color: $primary-color;
+        font-weight: bolder;
     }
     
 }

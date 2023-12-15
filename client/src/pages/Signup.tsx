@@ -1,33 +1,38 @@
-import React,{memo,useEffect,ChangeEvent } from "react";
+import React,{memo,ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from '../components/Logo'; 
 import {useSelector,useDispatch} from 'react-redux';
 import { RootState } from "../store/reducer";
-import { loginFormSetUsername,loginFormSetPassword } from "../store/loginForm/loginFormAction";
-import Cookie from '../components/Cookie';
+import {signupFormSetUsername,signupFormSetPassword,signupFormSetConfirmPass} from '../store/signupForm/signupAction';
 
-const Login:React.FC=()=>{
-    const cookie=Cookie();
-    const {username,password}=useSelector((state:RootState)=>state.loginForm);
+const Signup:React.FC=()=>{
+    const navigate=useNavigate();
+    const {username,password,confirm_password}=useSelector((state:RootState)=>state.signupForm);
     const dispatch=useDispatch();
 
     const handleUsernameChange=(e:ChangeEvent<HTMLInputElement>):void=>{
         e.preventDefault();
-        dispatch(loginFormSetUsername(e.target.value));
+        dispatch(signupFormSetUsername(e.target.value));
     };
 
     const handlePasswordChange=(e:ChangeEvent<HTMLInputElement>):void=>{
         e.preventDefault();
-        dispatch(loginFormSetPassword(e.target.value));
+        dispatch(signupFormSetPassword(e.target.value));
     };
+
+    const handleConfirmPasswordChange=(e:ChangeEvent<HTMLInputElement>):void=>{
+        e.preventDefault();
+        dispatch(signupFormSetConfirmPass(e.target.value))
+    }
 
 
 
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
 
-        let response=await fetch('http://localhost:8000/login',{
+        let response=await fetch('http://localhost:8000/signup',{
             method:'POST',
-            body:JSON.stringify({username:username,password:password}),
+            body:JSON.stringify({username:username,password:password,confirm_password:confirm_password}),
             headers:{
                 'Content-Type':'application/json',
 
@@ -36,21 +41,25 @@ const Login:React.FC=()=>{
         })
 
         response=await response.json();
-        console.log(response)
+
+        if((response as any).error===null){
+            navigate('/login');
+        }
     }
     
     return(
         <div>
             <Logo/>
+
             <div className="signupContainer">
                 <div className="signupBlock"> 
-
                     <div className="signupBlock__imgbg">
-                        <h2 style={{color:'white'}} className="signupBlock__head">Let's Explore</h2>
-                        <h6 style={{color:'#563517'}} className="signupBlock__head2">Login! lets show you what's ahead</h6>
+                        <h2 style={{color:'white'}} className="signupBlock__head">Get Started</h2>
+                        <h6 style={{color:'#563517'}} className="signupBlock__head2">Lets us create you a account</h6>
                     </div>
+                
                     <form className="signupBlock__form" onSubmit={handleSubmit}>
-                        <div className="signupBlock__form__inputBlock">
+                        <div className="signupBlock__form__inputBlock" >
                             <label 
                                 className="signupBlock__form__label"
                                 htmlFor="exampleInputEmail1" 
@@ -71,16 +80,30 @@ const Login:React.FC=()=>{
                                 className="signupBlock__form__label"
                                 htmlFor="exampleInputPassword1">Password</label>
                             <input
-                                className="signupBlock__form__input"
                                 id='exampleInputPassword1'
                                 type="password"
                                 name="password"
+                                className="signupBlock__form__input"
                                 onChange={handlePasswordChange}
                                 value={password}
                                 autoComplete="current-password"
                             />
                         </div>
-                        <button type="submit"  className="btn btn-outline-primary">LOGIN</button>
+                        <div className="signupBlock__form__inputBlock">
+                            <label 
+                                className="signupBlock__form__label"
+                                htmlFor="exampleInputPassword1">Confirm Password</label>
+                            <input
+                            id='exampleInputPassword2'
+                                type="password"
+                                name="confirm_password"
+                                className="signupBlock__form__input"
+                                onChange={handleConfirmPasswordChange}
+                                value={confirm_password}
+                                autoComplete="confirm-password"
+                            />
+                        </div>
+                        <button type="submit"  className="btn btn-outline-primary">SIGNUP</button>
                     </form>
                 </div>
             </div>
@@ -88,5 +111,5 @@ const Login:React.FC=()=>{
     );
 };
 
-export default memo(Login);
+export default memo(Signup);
 

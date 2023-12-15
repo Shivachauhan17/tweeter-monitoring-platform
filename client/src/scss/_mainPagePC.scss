@@ -1,0 +1,86 @@
+.pcContainer{
+    border: 1px solid $primary-color;
+    height: 75vh;
+    width: 15vw;
+    position: relative;
+    top:$logoheight;
+    border-radius: 15px;
+    box-shadow:5px 5px 20px gainsboro ;
+    overflow: hidden;
+
+}
+
+.pcHeading{
+    color: $primary-color;
+    padding: 10px;
+}
+
+.pcList1{
+    height: 40vh;
+    border-bottom: 1px solid gainsboro;
+    overflow: auto;
+
+    &__item{
+        height: 50px;
+        background:$primary-color;
+        margin: 10px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: start;
+        padding-left: 10px;
+        padding-right: 10px;
+        gap: 10px;
+        align-items: center;
+        box-shadow: 1px 1px 8px $primary-color;
+    }
+    &__img{
+        width: 40px;
+        height: 40px;
+        border:2px solid yellow;
+        border-radius: 4px;
+        transform: rotate(10deg);
+        transform-origin: center center;
+    }
+
+    &__name{
+        color: white;
+    }
+}
+
+.pcList2{
+    height:20vh;
+    padding: 10px;
+    overflow: auto;
+    width: fit-content;
+
+    &__item{
+        background: $primary-color;
+        margin-bottom: 10px;
+        color: white;
+        border-radius: 6px;
+        padding-left: 10px;
+        padding-right: 10px;
+        display: flex;
+        justify-content: start;
+        gap: 5px;
+        align-items: center;
+
+        &::before{
+            content: "";
+            height: 5px;
+            width: 5px;
+            background: yellow;
+            border: 2px solid yellow;
+            border-radius: 5px;
+        }
+    }
+
+    
+
+}
+
+.alignMainsCompo{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
