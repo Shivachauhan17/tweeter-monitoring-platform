@@ -39,7 +39,7 @@ const PersonsCommunity:React.FC=()=>{
                 
                 <div className='pcContainer__headBlock'>
                     <h2 className='pcHeading'>
-                        Community
+                        Keywords
                     </h2>
                     <ul className='pcList2'>{
                         communities.map((item,index)=>{

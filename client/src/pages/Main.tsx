@@ -3,6 +3,7 @@ import Cookie from '../components/Cookie';
 import PersonsCommunity from '../components/PersonsCommunity';
 import Logo from '../components/Logo';
 import CurrentPerson from '../components/CurrentPerson';
+import DataBlock from '../components/DataBlock';
 
 const Main:React.FC=()=>{
     const cookie=Cookie();
@@ -14,8 +15,9 @@ const Main:React.FC=()=>{
             <Logo/>
             <div className='alignMainsCompo'>
                 <CurrentPerson/>
-                <PersonsCommunity/>
+                <DataBlock/>
 
+                <PersonsCommunity/>
             </div>
         </div>
     );

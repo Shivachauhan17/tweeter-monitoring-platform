@@ -1,8 +1,38 @@
 .vNvStats{
-    border: 2px solid red;
     display: flex;
     justify-content:center;
     padding-top: 20px;
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
     
+}
+
+.CurrentUserName{
+    background: $primary-color;
+    width: fit-content;
+    color: white;
+    margin: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px $primary-color;
+}
+
+.currentUserDefaut{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    text-decoration: underline;
+    text-transform: capitalize;
+}
+
+.userKeywordConfigure{
+    padding: 3px;
+    &__user,&__keyword{
+        display: flex;
+        justify-content: start;
+        gap: 10px;
+
+    }
 }
