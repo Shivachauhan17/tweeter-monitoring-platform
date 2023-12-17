@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "connect-mongo": "^5.1.0"
+    "@types/dotenv": "^8.2.0",
+    "connect-mongo": "^5.1.0",
+    "g": "^2.0.1",
+    "mongoose": "^8.0.3",
+    "tsc": "^2.0.4"
   }
 }

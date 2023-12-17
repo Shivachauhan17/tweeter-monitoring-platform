@@ -12,6 +12,7 @@ import passport from 'passport';
 import passportConfig from './config/passport';
 
 import mainRoute from './Routes/main';
+import dataRoute from './Routes/data';
 
 dotenv.config()
 connectDB();
@@ -47,6 +48,7 @@ passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/',mainRoute);
+app.use('/',dataRoute);
 
 app.listen(8000,()=>{
     console.log("server is running you better catch it")

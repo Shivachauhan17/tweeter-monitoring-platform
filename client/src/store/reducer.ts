@@ -2,17 +2,20 @@ import {combineReducers,Reducer} from "redux";
 import userReducer,{userState,HomeAction} from './user/userReducer';
 import loginFormReducer,{LoginFormState,LoginFormAction} from './loginForm/loginFormReducer';
 import signupReducer,{SignupFormAction,SignupFormState} from './signupForm/signupReducer';
+import currentUserReducer,{CurrentUser,currentUserAction} from "./mainPage/currentUser/currentUserReducer";
 
 export interface RootState {
     user: userState, // Add more properties if you have additional reducers
     loginForm:LoginFormState,
-    signupForm:SignupFormState
+    signupForm:SignupFormState,
+    currentUser:CurrentUser
 };
 
-const rootReducer:Reducer<RootState,HomeAction | LoginFormAction | SignupFormAction>=combineReducers({
+const rootReducer:Reducer<RootState,HomeAction | LoginFormAction | SignupFormAction | currentUserAction>=combineReducers({
     user:userReducer,
     loginForm:loginFormReducer,
-    signupForm:signupReducer
+    signupForm:signupReducer,
+    currentUser:currentUserReducer
 })
 
 export default rootReducer;

@@ -1,13 +1,16 @@
 import { useCookies } from 'react-cookie';
 
 type CookieData=string | number | object;
-interface CookieService {
+export interface CookieService {
     setUserCookie: (value: CookieData, options?: object) => void;
     getUserCookie: () => CookieData | null;
     removeUserCookie: () => void;
+    setMonitoringUserCookie:(value:CookieData,options?: object)=>void;
+    getMonitoringUserCookie:()=>string;
+    removeMonitoringUserCookie:()=>void;
   }
 
-  const CookieService = () => {
+  const CookieService = ():CookieService => {
     const [cookies, setCookie, removeCookie] = useCookies(['User', 'MonitoringUser']);
   
     const setUserCookie = (value: CookieData, options = {}):void => {
