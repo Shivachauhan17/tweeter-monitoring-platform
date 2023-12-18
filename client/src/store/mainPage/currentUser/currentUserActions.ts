@@ -1,6 +1,6 @@
 import { SingleTweet,currentUserAction } from "./currentUserReducer";
 import currentUserActionTypes from "./currentUserActionTypes.";
-const currentUserActions={
+const currentUserAction={
     setData:(data:[SingleTweet]):currentUserAction=>{
         return{
             type:currentUserActionTypes.SET_DATA,

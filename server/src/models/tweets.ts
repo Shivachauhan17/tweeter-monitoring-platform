@@ -11,6 +11,7 @@ export interface ITweets extends Document{
     label:LabelType,
     tweet_link:string,
     is_keyword:boolean,
+    utcTime: Date;
 };
 
 const TweetsSchema:Schema=new Schema({
@@ -21,7 +22,8 @@ const TweetsSchema:Schema=new Schema({
     tweet:{type:String,required:true},
     label:{type:String,required:true},
     tweet_link:{type:String,required:true},
-    is_keyword:{type:Boolean,required:true}
+    is_keyword:{type:Boolean,required:true},
+    utcTime: { type: Date, required: true, default: new Date() }
 
 });
 

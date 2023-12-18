@@ -101,8 +101,8 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
                 violentPercentage:value1
             }
             
-        case "currentUser/setViolentPercentage":
-            const value2:number=typeof action.payload === 'number'?action.payload as number:state.violentPercentage;
+        case "currentUser/setNviolentPercentage":
+            const value2:number=typeof action.payload === 'number'?action.payload as number:state.nViolentPercentage;
             return{
                 ...state,
                 nViolentPercentage:value2

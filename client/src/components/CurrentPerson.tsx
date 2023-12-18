@@ -11,28 +11,36 @@ import axios from '../axios/createAxios';
 const CurrentPerson:React.FC=()=>{
   const cookie=cookies();
   const dispatch=useDispatch();
+  const page=useSelector((state:RootState)=>state.currentUser.page);
   const vioPercentage=useSelector((state:RootState)=>state.currentUser.violentPercentage);
   const nViolentPercentage=useSelector((state:RootState)=>state.currentUser.nViolentPercentage);
-
+  const tweetData=useSelector((state:RootState)=>state.currentUser.data);
 
   const data= [{ name:"Violent",value:vioPercentage},{name:"Non Violent",value:nViolentPercentage}];
-  const user=cookie.getUserCookie();
-  
-  const fetchUsers=async():Promise<void>=>{
-    let response=await axios.get('/getMyAllTweets');
-    console.log(response)
+  const monitoringUser=cookie.getMonitoringUserCookie();
+
+  const fetchMonitoringUserData=async():Promise<void>=>{
+    const response=await axios.post('/getMyAllTweets',{page:page,monitoringUser:monitoringUser});
+    dispatch(currentUserActions.setData(response.data.data));
 
   }
 
+  const vNvPercentage=async()=>{
+    const response=await axios.post('/get_vNvPercentage',{monitoringUser:monitoringUser}) ;
+    dispatch(currentUserActions.setViolentPercentage(response.data.violent));
+    dispatch(currentUserActions.setNviolentPercentage(response.data.nViolent));
+  }
+
   useEffect(()=>{
-    fetchUsers()
+    fetchMonitoringUserData();
+    vNvPercentage();
   },[]);
 
 
   return(
       <div className='pcContainer'>
         <div className='CurrentUserName'>
-          <h2>{} 's Stats</h2>
+          <h2>{monitoringUser} 's Stats</h2>
         </div>
         <div className='vNvStats'>
           <PieChart width={180} height={180}>
@@ -41,8 +49,8 @@ const CurrentPerson:React.FC=()=>{
                   isAnimationActive={false}
                   data={data}
                   cx={85}
-                  cy={70}
-                  outerRadius={50}
+                  cy={80}
+                  outerRadius={45}
                   fill='#6F00FF'
                   label
                 />
