@@ -1,0 +1,15 @@
+.addDelBlock{
+    height: 200px;
+    position: fixed;
+    top:200px;
+    left:50px;
+    z-index: 3;
+
+
+}
+
+.addDelBlock__cross{
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+}

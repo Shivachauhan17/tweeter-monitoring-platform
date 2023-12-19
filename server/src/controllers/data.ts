@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Tweet from '../models/tweets';
 import {IUser} from '../models/user';
+import Userkeyword from '../models/user_keyword';
 
 export interface SingleTweet{
     label:string,
@@ -76,6 +77,7 @@ const dataController={
                     username:req.body.monitoringUser 
                 })
                 .exec();
+            
 
             let nonViolents=await Tweet.countDocuments(
                 { 
@@ -85,6 +87,7 @@ const dataController={
                     username:req.body.monitoringUser 
                 })
                 .exec();
+            
 
             violents=(violents/(violents+nonViolents))*100;
             nonViolents=(nonViolents/(violents+nonViolents))*100;
@@ -97,11 +100,61 @@ const dataController={
             return res.status(500).json({data:{}});
         }
     },
-    addUser:async (req:Request,res:Response,next:NextFunction)=>{},
+    addUser:async (req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const newDoc=new Userkeyword({
+                admin_user:'shiva',
+                username:req.body.userToAdd,
+                keyword:"",
+                is_keyword:false
+            });
+            await newDoc.save();
+            res.status(200).json({data:newDoc});
+        }
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:{}});
+        }
+    },
 
-    deleteUser:async (req:Request,res:Response,next:NextFunction)=>{},
+    deleteUser:async (req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const data=await Userkeyword.deleteOne({username:req.body.userToDel,admin_user:'shiva'});
+            res.status(200).json({data:data});
+        }
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:{}});
+        }
+    },
+
+    addKeyword:async (req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const newDoc=new Userkeyword({
+                admin_user:'shiva',
+                username:"",
+                keyword:req.body.keywordToAdd,
+                is_keyword:true
+            });
+            await newDoc.save();
+            res.status(200).json({data:newDoc});
+        }
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:{}});
+        }
+    },
     
-
+    deleteKeyword:async (req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const data=await Userkeyword.deleteOne({keyword:req.body.keywordToDel,admin_user:'shiva'});
+            res.status(200).json({data:data});
+        }
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:{}});
+        }
+    }
 }
 
 export default dataController;

@@ -9,8 +9,8 @@ export interface IUserKeyword extends Document{
 
 const UserKeyWordSchema:Schema=new Schema({
     admin_user:{type:String,required:true},
-    username:{type:String,required:true},
-    keyword:{type:String,required:true},
+    username:{type:String},
+    keyword:{type:String},
     is_keyword:{type:Boolean,required:true}
 });
 
