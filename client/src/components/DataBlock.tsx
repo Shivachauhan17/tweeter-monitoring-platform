@@ -1,32 +1,29 @@
-import React,{memo,useState} from "react";
+import React,{memo,useState,ChangeEvent} from "react";
 import { SlDislike,SlLike } from "react-icons/sl";
 import { IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
-
+import { useSelector,useDispatch } from "react-redux";
+import { RootState } from "../store/reducer";
+import axios from "../axios/createAxios";
+import dateActions from "../store/mainPage/date/dateActions";
 
 const DataBlock:React.FC=()=>{
+    const dispatch=useDispatch();
     const [vioFilter,setVioFilter]=useState(false);
+    const userdata=useSelector((state:RootState)=>state.currentUser.data);
+    const startDate=useSelector((state:RootState)=>state.date.startDate);
+    console.log(startDate);
+    const endDate=useSelector((state:RootState)=>state.date.endDate);
+    console.log(endDate);
 
-    const userdata=[
-        {
-            tweet:"Among the billions of tweets, what manages to grab people’s attention the most?Below is a list of the 20 most retweeted tweets which tells us what tweeters love to share – the list even highlights some huge historical moments.            ",
-            profile_pic:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2Fwp-content%2Fuploads%2F2017%2F11%2Fjs-pie-chart.gif&tbnid=ETQq3uAtX0CFhM&vet=12ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR..i&imgrefurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2F2017%2F12%2F06%2Fpie-chart-create-javascript%2F&docid=nUMD0S2wpxMVMM&w=945&h=468&q=make%20a%20pie%20chart%20in%20javascript%20medium&client=ubuntu-chr&ved=2ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR",
-            tweet_id:"1",
-            label:"violent"
-        },
-        {
-            tweet:"Among the billions of tweets, what manages to grab people’s attention the most?Below is a list of the 20 most retweeted tweets which tells us what tweeters love to share – the list even highlights some huge historical moments.            ",
-            profile_pic:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2Fwp-content%2Fuploads%2F2017%2F11%2Fjs-pie-chart.gif&tbnid=ETQq3uAtX0CFhM&vet=12ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR..i&imgrefurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2F2017%2F12%2F06%2Fpie-chart-create-javascript%2F&docid=nUMD0S2wpxMVMM&w=945&h=468&q=make%20a%20pie%20chart%20in%20javascript%20medium&client=ubuntu-chr&ved=2ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR",
-            tweet_id:"1",
-            label:"non_violent"
-        },
-        {
-            tweet:"Among the billions of tweets, what manages to grab people’s attention the most?Below is a list of the 20 most retweeted tweets which tells us what tweeters love to share – the list even highlights some huge historical moments.            ",
-            profile_pic:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2Fwp-content%2Fuploads%2F2017%2F11%2Fjs-pie-chart.gif&tbnid=ETQq3uAtX0CFhM&vet=12ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR..i&imgrefurl=https%3A%2F%2Fwww.anychart.com%2Fblog%2F2017%2F12%2F06%2Fpie-chart-create-javascript%2F&docid=nUMD0S2wpxMVMM&w=945&h=468&q=make%20a%20pie%20chart%20in%20javascript%20medium&client=ubuntu-chr&ved=2ahUKEwiyjfXNq5SDAxUKcmwGHaiHBKIQMygCegQIARBR",
-            tweet_id:"1",
-            label:"non_violent"
-        }
-    ];
+    const handleStartDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
+        dispatch(dateActions.setStartDate(e.target.value));
 
+    }
+
+    const handleEndDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
+        dispatch(dateActions.setEndDate(e.target.value));
+
+    }
     return(
     <div>
         <div className="dataPageNavigation">
@@ -43,13 +40,15 @@ const DataBlock:React.FC=()=>{
                 <form className="mainBlock__filterBar__dateFilter">
                     <input 
                     placeholder="Start-Date"
-                    value=""
+                    value={startDate}
                     type="date"
+                    onChange={handleStartDateChange}
                     />
                     <input 
                     placeholder="End-Date"
-                    value=""
+                    value={endDate}
                     type="date"
+                    onChange={handleEndDateChange}
                     />
                     <button type="submit" className="mainBlock__filterBar__dateFilterButton">Filter</button>
                 </form>
@@ -69,8 +68,19 @@ const DataBlock:React.FC=()=>{
                                 <p >{item.tweet}</p>
                             </div>
                             <div className="dataItem__likeUnlike">
-                                <SlLike />
-                                <SlDislike />
+                                <SlLike className="dataItem__likeUnlike__l"  
+                                onClick={
+                                    async()=>{
+                                        console.log('SlLike clicked');
+                                        await axios.post('/right4al',{id:item.tweet_id});
+                                    }
+                                        }/>
+                                <SlDislike className="dataItem__likeUnlike__l" onClick={
+                                    async()=>{
+                                        console.log('DisLike clicked');
+                                        await axios.post('/reverse4al',{id:item.tweet_id});
+                                    }
+                                    }/>
                             </div>
                         </li>
                     )

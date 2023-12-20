@@ -20,7 +20,7 @@ export interface CurrentUser{
 
 export interface currentUserAction{
     type:String,
-    payload:string| SingleTweet[] | SingleTweet | number
+    payload:string| SingleTweet[] | SingleTweet | number 
 };
 
 const initialState:CurrentUser={
@@ -107,8 +107,7 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
                 ...state,
                 nViolentPercentage:value2
             }
-                
-
+        
         default:
             return state
     }

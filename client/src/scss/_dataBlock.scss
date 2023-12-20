@@ -114,7 +114,13 @@
         display: flex;
         justify-content: center;
         gap: 50px;
-        padding: 5px;
+        padding: 8px;
+
+        &__l:hover{
+            font-size: 20px;
+            color: $primary-color;
+            padding: 0px;
+        }
     }
 }
 
