@@ -57,8 +57,8 @@ const DataBlock:React.FC=()=>{
     return(
     <div>
         <div className="dataPageNavigation">
-            <IoIosArrowBack/>
-            <IoIosArrowForward/>
+            <IoIosArrowBack onClick={()=>{dispatch(currentUserActions.dcrPage())}}/>
+            <IoIosArrowForward onClick={()=>{dispatch(currentUserActions.incrPage())}}/>
         </div>
         <div className="mainBlock">
             <div className="mainBlock__filterBar">

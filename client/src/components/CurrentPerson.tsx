@@ -14,6 +14,7 @@ const CurrentPerson:React.FC=()=>{
   const cookie=cookies();
   const dispatch=useDispatch();
   const page=useSelector((state:RootState)=>state.currentUser.page);
+  console.log(page);
   const vioPercentage=useSelector((state:RootState)=>state.currentUser.violentPercentage);
   const nViolentPercentage=useSelector((state:RootState)=>state.currentUser.nViolentPercentage);
 
@@ -43,7 +44,7 @@ const CurrentPerson:React.FC=()=>{
   useEffect(()=>{
     fetchMonitoringUserData();
     vNvPercentage();
-  },[]);
+  },[page]);
 
 
   return(

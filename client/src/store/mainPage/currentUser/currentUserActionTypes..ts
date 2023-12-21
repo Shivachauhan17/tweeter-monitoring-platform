@@ -5,7 +5,7 @@ const currentUserActionTypes={
     SET_ADD_KEYWORD:"currentUser/setAddKeyword",
     SET_DEL_KEYWORD:"currentUser/setDelKeyword",
     INCR_PAGE:"currentUser/incrPage",
-    SET_ALL_USERS:"currentUser/setAllUsers",
+    DCR_PAGE:"currentUser/dcrPage",
     SET_ALL_KEYWORDS:"currentUser/setAllKeywords",
     SET_VIOLENT_PERCENTAGE:"currentUser/setViolentPercentage",
     SET_NVIOLENT_PERCENTAGE:"currentUser/setNviolentPercentage"

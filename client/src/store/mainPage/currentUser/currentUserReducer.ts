@@ -12,7 +12,6 @@ export interface CurrentUser{
     deleteKeyword:string,
     data:SingleTweet[],
     page:number,
-    allUsers:string[],
     allKeywords:string[],
     violentPercentage:number,
     nViolentPercentage:number
@@ -30,7 +29,6 @@ const initialState:CurrentUser={
     deleteKeyword:"",
     data:[],
     page:1,
-    allUsers:[],
     allKeywords:[],
     violentPercentage:50,
     nViolentPercentage:50
@@ -80,18 +78,20 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
                 page:state.page+1
             }
         
-        case "currentUser/setAllUsers":
-            const myUser:string=typeof action.payload === 'string'?action.payload as string:state.addUser;
-            return{
-                ...state,
-                allUsers:[...state.allUsers,myUser]
+        case "currentUser/dcrPage":
+            if(state.page>1){
+                return{
+                    ...state,
+                    page:state.page-1
+                }
             }
-        
+            else return state
+            
         case "currentUser/setAllKeywords":
             const myKeyword:string=typeof action.payload === 'string'?action.payload as string:state.addUser;
             return{
                 ...state,
-                allUsers:[...state.allUsers,myKeyword]
+                allKeywords:[...state.allKeywords,myKeyword]
             }
 
         case "currentUser/setViolentPercentage":

@@ -37,10 +37,10 @@ const currentUserAction={
             payload:""
         }
     },
-    setAllUsers:(data:string):currentUserAction=>{
+    dcrPage:():currentUserAction=>{
         return{
-            type:currentUserActionTypes.SET_ALL_USERS,
-            payload:data
+            type:currentUserActionTypes.DCR_PAGE,
+            payload:""
         }
     },
     setAllKeywords:(data:string):currentUserAction=>{
