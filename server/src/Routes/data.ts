@@ -10,6 +10,10 @@ dataRoute.post('/deleteKeyword',dataController.deleteKeyword as RequestHandler);
 dataRoute.post('/right4al',dataController.right4al as RequestHandler);
 dataRoute.post('/reverse4al',dataController.reverse4al as RequestHandler);
 dataRoute.post('/getMyAllTweets',dataController.getMyAllTweets as RequestHandler);
+dataRoute.post('/getDateFilteredTweets',dataController.getDateFilteredTweets as RequestHandler);
+dataRoute.post('/violentFilterTweets',dataController.violentFilterTweets as RequestHandler);
+
+dataRoute.get('/getMyMonitoringUsers',dataController.getMyMonitoringUsers as RequestHandler);
 
 
 export default dataRoute;

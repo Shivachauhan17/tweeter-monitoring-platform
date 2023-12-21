@@ -37,7 +37,7 @@ const PersonsCommunity:React.FC=()=>{
                     </ul>
                 </div>
                 
-                <div className='pcContainer__headBlock'>
+                {/* <div className='pcContainer__headBlock'>
                     <h2 className='pcHeading'>
                         Keywords
                     </h2>
@@ -51,7 +51,7 @@ const PersonsCommunity:React.FC=()=>{
                         })
                     }
                     </ul>
-                </div>
+                </div> */}
             </div>
         </div>
     );

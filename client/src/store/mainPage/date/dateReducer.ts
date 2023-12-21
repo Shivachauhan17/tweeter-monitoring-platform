@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export interface DATE{
     startDate:string,
     endDate:string
@@ -16,15 +18,19 @@ const dateReducer=(state:DATE=initialState,action:DateAction):DATE=>{
     switch(action.type){
 
         case 'date/setStartDate':
+            const mydate=format(new Date(action.payload),"yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+            
             return{
                 ...state,
-                startDate:action.payload
+                startDate:mydate
             }
 
         case 'date/setEndDate':
+            const myEndDate=format(new Date(action.payload),"yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+           
             return{
                 ...state,
-                endDate:action.payload
+                endDate:myEndDate
             }
 
         default:

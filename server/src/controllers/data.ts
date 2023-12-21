@@ -12,6 +12,10 @@ export interface SingleTweet{
     tweet_id:string,
 };
 
+export interface MyMUser{
+    profile:string,
+    person:string
+};
 
 
 const dataController={
@@ -222,57 +226,158 @@ const dataController={
         }
     },
 
-    // getMyAllTweetsDateFilter:async(req:Request,res:Response,next:NextFunction)=>{
-    //     try{
-    //         const pageLimit=5;
-    //         // if(req.user!==null && req.user!==undefined){
-    //             // const data=await Tweet
-    //             //             .find({label:{$ne:null},admin_user:(req.user as IUser).username})
-    //             //             .sort({utcTime:-1})
-    //             //             .skip((req.body.page-1)*pageLimit)
-    //             //             .limit(pageLimit).
-    //             //             exec();
+    getDateFilteredTweets:async(req:Request,res:Response,next:NextFunction)=>{
+        console.log(req.body);
+        try{
+            const pageLimit=5;
+            // if(req.user!==null && req.user!==undefined){
+                // const data=await Tweet
+                //             .find({label:{$ne:null},admin_user:'shiva',username:req.body.monitoringUser,
+                                //     utcTime:{
+                                //         $gte:req.body.startDate,
+                                //         $lte:req.body.endDate
+                                //             }
+                                // })
+                //             .sort({utcTime:-1})
+                //             .skip((req.body.page-1)*pageLimit)
+                //             .limit(pageLimit).
+                //             exec();
 
-    //             const data=await Tweet
-    //                         .find({label:{$ne:null},admin_user:'shiva',username:req.body.monitoringUser})
-    //                         .sort({utcTime:-1})
-    //                         .skip((req.body.page-1)*pageLimit)
-    //                         .limit(pageLimit).
-    //                         exec();
+                const data=await Tweet
+                            .find({label:{$ne:null},admin_user:'shiva',username:req.body.monitoringUser,
+                                utcTime:{
+                                    $gte:new Date(req.body.startDate),
+                                    $lte:new Date(req.body.endDate)
+                                        }
+                            })
+                            .sort({utcTime:-1})
+                            .skip((req.body.page-1)*pageLimit)
+                            .limit(pageLimit).
+                            exec();
                 
-    //             if (data.length>0){
-    //                 const newdata:SingleTweet[]=[];
+                if (data.length>0){
+                    const newdata:SingleTweet[]=[];
 
-    //                 data.forEach((element)=>{
-    //                     let obj:SingleTweet={
-    //                         label:"",
-    //                         tweet:"",
-    //                         profile_pic:"",
-    //                         tweet_id:""
-    //                     };
+                    data.forEach((element)=>{
+                        let obj:SingleTweet={
+                            label:"",
+                            tweet:"",
+                            profile_pic:"",
+                            tweet_id:""
+                        };
 
-    //                     obj.label=element.label;
-    //                     obj.tweet=element.tweet;
-    //                     obj.profile_pic=element.profile;
-    //                     obj.tweet_id=element._id;
+                        obj.label=element.label;
+                        obj.tweet=element.tweet;
+                        obj.profile_pic=element.profile;
+                        obj.tweet_id=element._id;
 
-    //                     newdata.push(obj);
+                        newdata.push(obj);
                         
-    //                 })
-    //                 return res.status(200).json({data:newdata});
+                    })
+                    return res.status(200).json({data:newdata});
 
-    //             }
+                }
                 
-    //             return res.status(500).json({data:""});
-    //         // }
-    //         // return res.status(200).json({data:""});
-    //         }
+                return res.status(500).json({data:""});
+            // }
+            // return res.status(200).json({data:""});
+            }
         
-    //     catch(err){
-    //         console.log(err);
-    //         return res.status(500).json({data:""});
-    //     }
-    // },
+            catch(err){
+                console.log(err);
+                return res.status(500).json({data:""});
+            }
+    },
+    violentFilterTweets:async(req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const pageLimit=5;
+            // if(req.user!==null && req.user!==undefined){
+                // const data=await Tweet
+                //             .find({label:{$ne:null},admin_user:(req.user as IUser).username})
+                //             .sort({utcTime:-1})
+                //             .skip((req.body.page-1)*pageLimit)
+                //             .limit(pageLimit).
+                //             exec();
+
+                const data=await Tweet
+                            .find({label:"violent",admin_user:'shiva',username:req.body.monitoringUser})
+                            .sort({utcTime:-1})
+                            .skip((req.body.page-1)*pageLimit)
+                            .limit(pageLimit).
+                            exec();
+                
+                if (data.length>0){
+                    const newdata:SingleTweet[]=[];
+
+                    data.forEach((element)=>{
+                        let obj:SingleTweet={
+                            label:"",
+                            tweet:"",
+                            profile_pic:"",
+                            tweet_id:""
+                        };
+
+                        obj.label=element.label;
+                        obj.tweet=element.tweet;
+                        obj.profile_pic=element.profile;
+                        obj.tweet_id=element._id;
+
+                        newdata.push(obj);
+                        
+                    })
+                    return res.status(200).json({data:newdata});
+
+                }
+                
+                return res.status(500).json({data:""});
+            // }
+            // return res.status(200).json({data:""});
+            }
+        
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:""});
+        }
+    },
+
+    getMyMonitoringUsers:async(req:Request,res:Response,next:NextFunction)=>{
+        try{
+            const pageLimit=5;
+            
+                const data=await Userkeyword.distinct('username',{admin_user:'shiva'});
+                const newdata:MyMUser[]=[];
+                if (data.length>0){
+                    
+
+                    
+                    for(let i=0;i<data.length;i++){
+                        let obj:MyMUser={
+                            person:"",
+                            profile:""
+                        };
+                        const doc=await Tweet.findOne({username:data[i]});
+
+                        if(doc){
+                            obj.person=data[i];
+                            obj.profile=doc.profile;
+                            newdata.push(obj);
+                        }
+                    };   
+                    
+                    return res.status(200).json({data:newdata});
+
+                }
+                
+                return res.status(500).json({data:[]});
+            // }
+            // return res.status(200).json({data:""});
+            }
+        
+        catch(err){
+            console.log(err);
+            return res.status(500).json({data:[]});
+        }
+    },
 }
 
 export default dataController;
