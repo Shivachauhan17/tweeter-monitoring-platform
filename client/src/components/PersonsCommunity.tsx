@@ -5,13 +5,14 @@ import {useSelector,useDispatch} from 'react-redux';
 import { RootState } from '../store/reducer';
 import allMActions from '../store/mainPage/allMusers/allMuserActions';
 import {setMonitoringUser} from '../store/user/userActions'
+import currentUserAction from '../store/mainPage/currentUser/currentUserActions';
 
 const PersonsCommunity:React.FC=()=>{
     
     const dispatch=useDispatch();
     const persons=useSelector((state:RootState)=>state.allM.allUsers);
-    const monitor=useSelector((state:RootState)=>state.user.monitoringUser)
-    console.log(monitor)
+    const keywords=useSelector((state:RootState)=>state.currentUser.allKeywords)
+    console.log(keywords)
     const cookie=Cookie()
 
     const getMyMonitoringUsers=async()=>{
@@ -19,8 +20,17 @@ const PersonsCommunity:React.FC=()=>{
         dispatch(allMActions.setAllUsers(response.data.data));
     };
 
+    const getAllMyKeywords=async()=>{
+        const response=await axios.post('/getAllKeywords',{admin_user:cookie.getUserCookie()})
+        if(response.data.data!==null){
+            dispatch(currentUserAction.setAllKeywords(response.data.data))
+        }
+
+    }
+
     useEffect(()=>{
         getMyMonitoringUsers();
+        getAllMyKeywords()
     },[]);
 
     
@@ -49,12 +59,12 @@ const PersonsCommunity:React.FC=()=>{
                     </ul>
                 </div>
                 
-                {/* <div className='pcContainer__headBlock'>
+                <div className='pcContainer__headBlock' style={{overflowY:'auto'}}>
                     <h2 className='pcHeading'>
                         Keywords
                     </h2>
-                    <ul className='pcList2'>{
-                        communities.map((item,index)=>{
+                    <ul className='pcList2' style={{margin:'0 auto'}}>{
+                        keywords.map((item,index)=>{
                             return(
                                 <li key={index} className='pcList2__item'>
                                     <h4>{item}</h4>
@@ -63,7 +73,7 @@ const PersonsCommunity:React.FC=()=>{
                         })
                     }
                     </ul>
-                </div> */}
+                </div>
             </div>
         </div>
     );

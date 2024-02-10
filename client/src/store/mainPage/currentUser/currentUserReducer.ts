@@ -90,10 +90,11 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
             else return state
             
         case "currentUser/setAllKeywords":
-            const myKeyword:string=typeof action.payload === 'string'?action.payload as string:state.addUser;
+            const myKeyword:string[]=Array.isArray(action.payload)?action.payload.map(item => item.label):[];
             return{
                 ...state,
-                allKeywords:[...state.allKeywords,myKeyword]
+                // allKeywords:[...state.allKeywords,myKeyword]
+                allKeywords:myKeyword
             }
 
         case "currentUser/setViolentPercentage":

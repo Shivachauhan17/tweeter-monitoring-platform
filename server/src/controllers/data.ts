@@ -12,6 +12,8 @@ export interface SingleTweet{
     tweet_id:string,
 };
 
+export interface AllKeywords{ label: string; }
+
 export interface MyMUser{
     profile:string,
     person:string
@@ -31,8 +33,17 @@ const dataController={
     },
     getAllKeywords:async(req:Request,res:Response,next:NextFunction)=>{
         try{
-            const result=await Userkeyword.distinct('keyword', { is_keyword: true,admin_user:req.body.username })
-            res.status(200).json({data:result});
+            const result=await Userkeyword.distinct('keyword', { is_keyword: true,admin_user:req.body.admin_user})
+            const newData:AllKeywords[]=[]
+            if(result.length>0){
+                for(let i=0;i<result.length;i++){
+                const obj={label:""}
+                obj.label=result[i]
+                newData.push(obj)
+            }
+            return res.status(200).json({data:newData})
+            }
+            res.status(200).json({data:null});
         }
         catch(err){
             console.log(err);
