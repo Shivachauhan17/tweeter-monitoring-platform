@@ -1,3 +1,5 @@
+import currentUserActionTypes from "./currentUserActionTypes.";
+
 export interface SingleTweet{
     label:string,
     tweet:string,
@@ -72,13 +74,13 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
                 deleteKeyword:delKeyword
             }      
             
-        case "currentUser/incrPage":
+        case currentUserActionTypes.INCR_PAGE:
             return{
                 ...state,
                 page:state.page+1
             }
         
-        case "currentUser/dcrPage":
+        case currentUserActionTypes.DCR_PAGE:
             if(state.page>1){
                 return{
                     ...state,

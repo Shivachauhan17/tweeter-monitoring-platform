@@ -70,7 +70,13 @@ const mainRoute={
     login:passport.authenticate('local', {successRedirect:"/successLogin",failureRedirect:"/failureLogin"}),
 
     successRedirect:(req:Request,res:Response,next:NextFunction)=>{
-        res.status(200).json({user:(req.user as IUser).username})
+        console.log(req.user)
+        if(req.user!==null && req.user!==undefined){
+            console.log("okk")
+         return res.status(200).json({user:(req.user as IUser).username})}
+         
+         res.status(200).json({user:null})
+         
     },
 
     failureRedirect:(req:Request,res:Response,next:NextFunction)=>{

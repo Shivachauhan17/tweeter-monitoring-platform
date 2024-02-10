@@ -11,10 +11,10 @@ const App:React.FC=()=> {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main/>} />
         <Route path="/" element={<LoginSignup/>} />
         <Route path="/login" element={<Login/>} />
         <Route path='/signup' element={<Signup/>}/>
+        <Route path="/home" element={<Main/>} />
       </Routes>
     </BrowserRouter>
   )

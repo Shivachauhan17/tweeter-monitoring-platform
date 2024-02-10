@@ -4,11 +4,16 @@ import {useSelector,useDispatch} from 'react-redux';
 import { RootState } from "../store/reducer";
 import { loginFormSetUsername,loginFormSetPassword } from "../store/loginForm/loginFormAction";
 import Cookie from '../components/Cookie';
+import {UserResponse} from './LoginSignup'
+import axios,{AxiosResponse} from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Login:React.FC=()=>{
+    const navigate=useNavigate()
     const cookie=Cookie();
     const {username,password}=useSelector((state:RootState)=>state.loginForm);
     const dispatch=useDispatch();
+
 
     const handleUsernameChange=(e:ChangeEvent<HTMLInputElement>):void=>{
         e.preventDefault();
@@ -25,18 +30,17 @@ const Login:React.FC=()=>{
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
 
-        let response=await fetch('http://localhost:8000/login',{
-            method:'POST',
-            body:JSON.stringify({username:username,password:password}),
-            headers:{
-                'Content-Type':'application/json',
-
-            },
-            credentials:'include'
-        })
-
-        response=await response.json();
+        let response:AxiosResponse=await axios.post<UserResponse>('http://localhost:8000/login',{username:username,password:password},{withCredentials: true})
         console.log(response)
+        if(response.data.user){
+            cookie.setUserCookie(response.data.user)
+            console.log(cookie.getUserCookie())
+            navigate('/home')
+        }
+        else{
+            navigate('/')
+        }
+        
     }
     
     return(

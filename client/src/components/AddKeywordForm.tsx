@@ -5,12 +5,18 @@ import { RootState } from '../store/reducer';
 import { RxCross1 } from "react-icons/rx";
 import axios from '../axios/createAxios';
 import addDelActions from '../store/mainPage/popAddDelForms/addDelFormsActions';
+import cookies from '../components/Cookie';
 
-const DelUserForm:React.FC=()=>{
+const AddKeywordForm:React.FC=()=>{
+    const cookie=cookies();
     const dispatch=useDispatch();
-    const addKeyWord=useSelector((state:RootState)=>state.currentUser.addKeyword);
-    const handleKeyWordAddSubmit=async()=>{
-        await axios.post('/addKeyword',{keywordToAdd:addKeyWord});
+    const value=useSelector((state:RootState)=>state.currentUser.addKeyword);
+    const addKeyword=useSelector((state:RootState)=>state.currentUser.addKeyword);
+    const handleKeywordAddSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+        const response=await axios.post('/addKeyword',{keywordToAdd:addKeyword,admin_user:cookie.getUserCookie()});
+        if(response.status===200)
+            dispatch(addDelActions.popAddKeyword())
     }
 
     const handleAddKeywordChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -24,12 +30,12 @@ const DelUserForm:React.FC=()=>{
                 <div  onClick={()=>{dispatch(addDelActions.popAddKeyword())}}>< RxCross1/></div>
             </div>
             
-            <form className="signupBlock__form" onSubmit={handleKeyWordAddSubmit}> 
-                <input placeholder='Type username' className="signupBlock__form__input" value={addKeyWord} onChange={handleAddKeywordChange}/>
+            <form className="signupBlock__form" onSubmit={handleKeywordAddSubmit}> 
+                <input placeholder='Type Keyword' className="signupBlock__form__input" value={value} onChange={handleAddKeywordChange}/>
                 <button className="btn btn-outline-primary" type='submit'>ADD</button>
             </form>
         </div>
     );
 };
 
-export default memo(DelUserForm);
+export default memo(AddKeywordForm);

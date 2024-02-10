@@ -29,15 +29,17 @@ const AddDelNew=()=>{
           
           <p>Add/Delete user</p>
         </div>
-        {/* <div className='userKeywordConfigure__keyword'>
+        <div className='userKeywordConfigure__keyword'>
           <div>
             <RiAddBoxLine onClick={()=>{dispatch(addDelActions.popAddKeyword())}}/>
             <RiDeleteBinLine onClick={()=>{dispatch(addDelActions.popDelKeyword())}}/>
           </div>
           <p>Add/Delete key..</p>
-        </div> */}
+        </div>
         {popAddUser?<AddUserForm/>:<p></p>}
         {popDelUser?<DelUserForm/>:<p></p>}
+        {popAddKeyword?<AddKeywordForm/>:<p></p>}
+        {popDelKeyword?<DelKeywordForm/>:<p></p>}
         {/* {popAddKeyword?<AddKeywordForm/>:<p></p>}
         {popDelKeyword?<DelKeywordForm/>:<p></p>} */}
       </div>

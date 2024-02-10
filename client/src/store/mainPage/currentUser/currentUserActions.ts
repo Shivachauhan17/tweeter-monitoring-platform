@@ -38,6 +38,7 @@ const currentUserAction={
         }
     },
     dcrPage:():currentUserAction=>{
+
         return{
             type:currentUserActionTypes.DCR_PAGE,
             payload:""

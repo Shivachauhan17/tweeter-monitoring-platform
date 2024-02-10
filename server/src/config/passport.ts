@@ -8,6 +8,8 @@ type serialize=IUser|any;
 
 export default function (passport:PassportStatic):void {
   passport.use(new LocalStrategy( async (username, password, done) => {
+    console.log('username:',username)
+    console.log("password:",password)
 
     await User.findOne({ username: username })
         .then((user) => {
@@ -32,6 +34,7 @@ export default function (passport:PassportStatic):void {
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findById(id);
+      console.log(user)
       done(null, user);
     } catch (err) {
       done(err, null);

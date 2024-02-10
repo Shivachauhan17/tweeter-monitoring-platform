@@ -21,7 +21,6 @@ const PersonsCommunity:React.FC=()=>{
 
     
 
-    const communities=['web developer','data science']
 
 
     return(

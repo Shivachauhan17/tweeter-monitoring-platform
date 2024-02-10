@@ -5,13 +5,18 @@ import { RootState } from '../store/reducer';
 import { RxCross1 } from "react-icons/rx";
 import axios from '../axios/createAxios';
 import addDelActions from '../store/mainPage/popAddDelForms/addDelFormsActions';
+import cookies from '../components/Cookie';
 
 const AddUserForm:React.FC=()=>{
+    const cookie=cookies();
     const dispatch=useDispatch();
     const value=useSelector((state:RootState)=>state.currentUser.addUser);
     const addUser=useSelector((state:RootState)=>state.currentUser.addUser);
-    const handleUserAddSubmit=async()=>{
-        await axios.post('/addUser',{userToAdd:addUser});
+    const handleUserAddSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+        const response=await axios.post('/addUser',{userToAdd:addUser,admin_user:cookie.getUserCookie()});
+        if(response.status===200)
+            dispatch(addDelActions.popAddUser())
     }
 
     const handleAddUserChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
