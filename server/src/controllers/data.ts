@@ -358,9 +358,9 @@ const dataController={
 
     getMyMonitoringUsers:async(req:Request,res:Response,next:NextFunction)=>{
         try{
-            const pageLimit=5;
             
-                const data=await Userkeyword.distinct('username',{admin_user:'shiva'});
+                const data=await Userkeyword.distinct('username',{admin_user:req.body.admin_user,is_keyword:false});
+                // console.log(data)
                 const newdata:MyMUser[]=[];
                 if (data.length>0){
                     
@@ -378,20 +378,25 @@ const dataController={
                             obj.profile=doc.profile;
                             newdata.push(obj);
                         }
+                        else{
+                            obj.person=data[i];
+                            obj.profile="";
+                            newdata.push(obj);
+                        }
                     };   
                     
                     return res.status(200).json({data:newdata});
 
                 }
                 
-                return res.status(500).json({data:[]});
+                return res.status(200).json({data:[]});
             // }
             // return res.status(200).json({data:""});
             }
         
         catch(err){
             console.log(err);
-            return res.status(500).json({data:[]});
+            return res.status(500).json({data:null});
         }
     },
 }

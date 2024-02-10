@@ -14,7 +14,7 @@ dataRoute.post('/getMyAllTweets',dataController.getMyAllTweets as RequestHandler
 dataRoute.post('/getDateFilteredTweets',dataController.getDateFilteredTweets as RequestHandler);
 dataRoute.post('/violentFilterTweets',dataController.violentFilterTweets as RequestHandler);
 
-dataRoute.get('/getMyMonitoringUsers',dataController.getMyMonitoringUsers as RequestHandler);
+dataRoute.post('/getMyMonitoringUsers',dataController.getMyMonitoringUsers as RequestHandler);
 
 
 export default dataRoute;
