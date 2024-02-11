@@ -60,9 +60,11 @@ const dataController={
                 //             .skip((req.body.page-1)*pageLimit)
                 //             .limit(pageLimit).
                 //             exec();
+            
+            if(req.body.isUserMonitor){
 
                 const data=await Tweet
-                            .find({label:{$ne:null},admin_user:req.body.admin_user,username:req.body.monitoringUser})
+                            .find({label:{$ne:null},admin_user:req.body.admin_user,username:req.body.monitoringUser,is_keyword:false})
                             .sort({utcTime:-1})
                             .skip((req.body.page-1)*pageLimit)
                             .limit(pageLimit).
@@ -91,9 +93,40 @@ const dataController={
 
                 }
                 
-                return res.status(200).json({data:null});
-            // }
-            // return res.status(200).json({data:""});
+                return res.status(200).json({data:null});}
+                else{
+                    const data=await Tweet
+                    .find({label:{$ne:null},admin_user:req.body.admin_user,keyword:req.body.monitoringUser,is_keyword:true})
+                    .sort({utcTime:-1})
+                    .skip((req.body.page-1)*pageLimit)
+                    .limit(pageLimit).
+                    exec();
+
+                    if (data.length>0){
+                        const newdata:SingleTweet[]=[];
+
+                        data.forEach((element)=>{
+                            let obj:SingleTweet={
+                                label:"",
+                                tweet:"",
+                                profile_pic:"",
+                                tweet_id:""
+                            };
+
+                            obj.label=element.label;
+                            obj.tweet=element.tweet;
+                            obj.profile_pic=element.profile;
+                            obj.tweet_id=element._id;
+
+                            newdata.push(obj);
+                            
+                        })
+                        return res.status(200).json({data:newdata});
+
+                    }
+                    
+                    return res.status(200).json({data:null});
+                }
             }
         
         catch(err){
@@ -104,33 +137,60 @@ const dataController={
 
     get_vNvPercentage:async (req:Request,res:Response,next:NextFunction)=>{
         try{
-            console.log(req.body)
             // const cutoffDate = new Date();
             // cutoffDate.setHours(cutoffDate.getHours() - 24);
-            let violents = await Tweet.countDocuments(
-                { 
-                    // utcTime: { $gte: cutoffDate },
-                    label:'violent',
-                    admin_user:req.body.admin_user,
-                    username:req.body.monitoringUser 
-                })
-                .exec();
-            
+            if(req.body.isUserMonitor){
+                let violents = await Tweet.countDocuments(
+                    { 
+                        // utcTime: { $gte: cutoffDate },
+                        label:'violent',
+                        admin_user:req.body.admin_user,
+                        username:req.body.monitoringUser 
+                    })
+                    .exec();
+                
 
-            let nonViolents=await Tweet.countDocuments(
-                { 
-                    // utcTime: { $gte: cutoffDate },
-                    label:'non-violent',
-                    admin_user:req.body.admin_user,
-                    username:req.body.monitoringUser 
-                })
-                .exec();
-            
-            let tempViolents=violents
-            violents=(violents/(violents+nonViolents))*100;
-            nonViolents=(nonViolents/(tempViolents+nonViolents))*100;
+                let nonViolents=await Tweet.countDocuments(
+                    { 
+                        // utcTime: { $gte: cutoffDate },
+                        label:'non-violent',
+                        admin_user:req.body.admin_user,
+                        username:req.body.monitoringUser 
+                    })
+                    .exec();
+                
+                let tempViolents=violents
+                violents=(violents/(violents+nonViolents))*100;
+                nonViolents=(nonViolents/(tempViolents+nonViolents))*100;
 
-            return res.status(200).json({violent:violents,nViolent:nonViolents});
+                return res.status(200).json({violent:violents,nViolent:nonViolents});
+            }
+            else{
+                let violents = await Tweet.countDocuments(
+                    { 
+                        // utcTime: { $gte: cutoffDate },
+                        label:'violent',
+                        admin_user:req.body.admin_user,
+                        keyword:req.body.monitoringUser 
+                    })
+                    .exec();
+                
+    
+                let nonViolents=await Tweet.countDocuments(
+                    { 
+                        // utcTime: { $gte: cutoffDate },
+                        label:'non-violent',
+                        admin_user:req.body.admin_user,
+                        keyword:req.body.monitoringUser 
+                    })
+                    .exec();
+                
+                let tempViolents=violents
+                violents=(violents/(violents+nonViolents))*100;
+                nonViolents=(nonViolents/(tempViolents+nonViolents))*100;
+    
+                return res.status(200).json({violent:violents,nViolent:nonViolents});
+            }
 
         }
         catch(err){
@@ -330,6 +390,8 @@ const dataController={
                 //             .skip((req.body.page-1)*pageLimit)
                 //             .limit(pageLimit).
                 //             exec();
+
+                if(req.body.isUserMonitor){
                 const data=await Tweet
                             .find({label:'violent',admin_user:req.body.admin_user,username:req.body.monitoringUser})
                             .sort({utcTime:-1})
@@ -358,6 +420,37 @@ const dataController={
                     })
                     return res.status(200).json({data:newdata});}
                     return res.status(200).json({data:null})
+                }
+                else{
+                    const data=await Tweet
+                            .find({label:'violent',admin_user:req.body.admin_user,keyword:'riot'})
+                            .sort({utcTime:-1})
+                            .skip((req.body.page-1)*pageLimit)
+                            .limit(pageLimit).
+                            exec();
+                
+                if (data.length>0){
+                    const newdata:SingleTweet[]=[];
+
+                    data.forEach((element)=>{
+                        let obj:SingleTweet={
+                            label:"",
+                            tweet:"",
+                            profile_pic:"",
+                            tweet_id:""
+                        };
+
+                        obj.label=element.label;
+                        obj.tweet=element.tweet;
+                        obj.profile_pic=element.profile;
+                        obj.tweet_id=element._id;
+
+                        newdata.push(obj);
+                        
+                    })
+                    return res.status(200).json({data:newdata});}
+                    return res.status(200).json({data:null})
+                }
                     
             }
         

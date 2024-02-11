@@ -15,7 +15,7 @@ const CurrentPerson:React.FC=()=>{
   const cookie=cookies();
   const dispatch=useDispatch();
   const page=useSelector((state:RootState)=>state.currentUser.page);
-  console.log(page)
+  const isUserMonitor=useSelector((state:RootState)=>state.currentUser.isUserMonitor)
   const vioPercentage=useSelector((state:RootState)=>state.currentUser.violentPercentage);
   const nViolentPercentage=useSelector((state:RootState)=>state.currentUser.nViolentPercentage);
   const data= [{ name:"Violent",value:vioPercentage},{name:"Non Violent",value:nViolentPercentage}];
@@ -29,13 +29,14 @@ const CurrentPerson:React.FC=()=>{
   }
 
   const fetchMonitoringUserData=async():Promise<void>=>{
-    const response=await axios.post('/getMyAllTweets',{page:page,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
-    dispatch(currentUserActions.setData(response.data.data));
+      const response=await axios.post('/getMyAllTweets',{page:page,isUserMonitor:isUserMonitor,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
+      dispatch(currentUserActions.setData(response.data.data));
+    
 
   }
 
   const vNvPercentage=async()=>{
-    const response=await axios.post('/get_vNvPercentage',{monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()}) ;
+    const response=await axios.post('/get_vNvPercentage',{isUserMonitor:isUserMonitor,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()}) ;
     if(response.data.violent!==null && response.data.nViolent!==null){
       dispatch(currentUserActions.setViolentPercentage(response.data.violent));
       dispatch(currentUserActions.setNviolentPercentage(response.data.nViolent));

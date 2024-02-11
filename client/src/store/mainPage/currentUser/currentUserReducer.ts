@@ -16,7 +16,8 @@ export interface CurrentUser{
     page:number,
     allKeywords:string[],
     violentPercentage:number,
-    nViolentPercentage:number
+    nViolentPercentage:number,
+    isUserMonitor:Boolean
 };
 
 export interface currentUserAction{
@@ -33,7 +34,8 @@ const initialState:CurrentUser={
     page:1,
     allKeywords:[],
     violentPercentage:50,
-    nViolentPercentage:50
+    nViolentPercentage:50,
+    isUserMonitor:true
 };
 
 const currentUserReducer=(state:CurrentUser=initialState,action:currentUserAction):CurrentUser=>{
@@ -109,6 +111,17 @@ const currentUserReducer=(state:CurrentUser=initialState,action:currentUserActio
             return{
                 ...state,
                 nViolentPercentage:value2
+            }
+        
+        case currentUserActionTypes.SET_USER_MONITOR_TRUE:
+            return{
+                ...state,
+                isUserMonitor:true
+            }
+        case currentUserActionTypes.SET_USER_MONITOR_FALSE:
+            return{
+                ...state,
+                isUserMonitor:false
             }
         
         default:

@@ -8,7 +8,9 @@ const currentUserActionTypes={
     DCR_PAGE:"currentUser/dcrPage",
     SET_ALL_KEYWORDS:"currentUser/setAllKeywords",
     SET_VIOLENT_PERCENTAGE:"currentUser/setViolentPercentage",
-    SET_NVIOLENT_PERCENTAGE:"currentUser/setNviolentPercentage"
+    SET_NVIOLENT_PERCENTAGE:"currentUser/setNviolentPercentage",
+    SET_USER_MONITOR_FALSE:"currentUser/setIsUserMonitorFalse",
+    SET_USER_MONITOR_TRUE:"currentUser/setIsUserMonitorTrue",
 }
 
 export default currentUserActionTypes;

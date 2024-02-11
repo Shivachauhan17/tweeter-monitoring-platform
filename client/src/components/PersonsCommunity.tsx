@@ -4,15 +4,14 @@ import axios from '../axios/createAxios';
 import {useSelector,useDispatch} from 'react-redux';
 import { RootState } from '../store/reducer';
 import allMActions from '../store/mainPage/allMusers/allMuserActions';
-import {setMonitoringUser} from '../store/user/userActions'
 import currentUserAction from '../store/mainPage/currentUser/currentUserActions';
+import {setMonitoringUser} from '../store/user/userActions'
 
 const PersonsCommunity:React.FC=()=>{
     
     const dispatch=useDispatch();
     const persons=useSelector((state:RootState)=>state.allM.allUsers);
     const keywords=useSelector((state:RootState)=>state.currentUser.allKeywords)
-    console.log(keywords)
     const cookie=Cookie()
 
     const getMyMonitoringUsers=async()=>{
@@ -49,7 +48,10 @@ const PersonsCommunity:React.FC=()=>{
                     {
                     persons.map((item,index)=>{
                         return(
-                            <li onClick={()=>{dispatch(setMonitoringUser(item?.person))}}  key={index} className='pcList1__item'>
+                            <li onClick={()=>{
+                                dispatch(setMonitoringUser(item?.person))
+                                dispatch(currentUserAction.setIsUserMonitorTrue())
+                                }}  key={index} className='pcList1__item'>
                                 <img className="pcList1__img" src={item?.profile}/>
                                 <h4  className='pcList1__name'>{item.person}</h4>
                             </li>
@@ -67,7 +69,10 @@ const PersonsCommunity:React.FC=()=>{
                         keywords.map((item,index)=>{
                             return(
                                 <li key={index} className='pcList2__item'>
-                                    <h4>{item}</h4>
+                                    <h4 onClick={()=>{
+                                        dispatch(setMonitoringUser(item))
+                                        dispatch(currentUserAction.setIsUserMonitorFalse())
+                                        }} >{item}</h4>
                                 </li>
                             )
                         })

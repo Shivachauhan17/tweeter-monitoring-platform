@@ -61,6 +61,18 @@ const currentUserAction={
             type:currentUserActionTypes.SET_NVIOLENT_PERCENTAGE,
             payload:data
         }
+    },
+    setIsUserMonitorTrue:():currentUserAction=>{
+        return{
+            type:currentUserActionTypes.SET_USER_MONITOR_TRUE,
+            payload:''
+        }
+    },
+    setIsUserMonitorFalse:():currentUserAction=>{
+        return{
+            type:currentUserActionTypes.SET_USER_MONITOR_FALSE,
+            payload:''
+        }
     }
 }
 

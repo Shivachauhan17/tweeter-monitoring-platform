@@ -17,6 +17,8 @@ const DataBlock:React.FC=()=>{
     const endDate=useSelector((state:RootState)=>state.date.endDate);
     const page=useSelector((state:RootState)=>state.currentUser.page);
     const monitoringUser=useSelector((state:RootState)=>state.user.monitoringUser)
+    const isUserMonitor=useSelector((state:RootState)=>state.currentUser.isUserMonitor)
+
 
     const [onlyViolents,setOnlyViolents]=useState(false)
     const handleStartDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
@@ -50,7 +52,7 @@ const DataBlock:React.FC=()=>{
 
         const response= await axios.post('/violentFilterTweets',
         {
-
+            isUserMonitor:isUserMonitor,
             monitoringUser:monitoringUser,
             page:page,
             admin_user:cookie.getUserCookie(),
@@ -64,7 +66,7 @@ const DataBlock:React.FC=()=>{
         }
         }
         else{
-            const response=await axios.post('/getMyAllTweets',{page:page,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
+            const response=await axios.post('/getMyAllTweets',{isUserMonitor:isUserMonitor,page:page,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
         dispatch(currentUserActions.setData(response.data.data));
         }
 
@@ -92,7 +94,7 @@ const DataBlock:React.FC=()=>{
                 >
                     See Only Violents
                 </button>
-                <form className="mainBlock__filterBar__dateFilter" onSubmit={handleFilterSubmit}>
+                {/* <form className="mainBlock__filterBar__dateFilter" onSubmit={handleFilterSubmit}>
                     <input 
                     placeholder="Start-Date"
                     type="datetime-local"
@@ -104,7 +106,7 @@ const DataBlock:React.FC=()=>{
                     onChange={handleEndDateChange}
                     />
                     <button type="submit" className="mainBlock__filterBar__dateFilterButton">Filter</button>
-                </form>
+                </form> */}
             </div>
             <ul className="mainBlock__contentArea">{
                 userdata.map((item,index)=>{
