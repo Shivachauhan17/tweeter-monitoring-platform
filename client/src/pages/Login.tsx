@@ -30,7 +30,7 @@ const Login:React.FC=()=>{
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
 
-        let response:AxiosResponse=await axios.post<UserResponse>('http://localhost:8000/login',{username:username,password:password},{withCredentials: true})
+        let response:AxiosResponse=await axios.post<UserResponse>('https://tweeter-monitoring-backend.onrender.com/login',{username:username,password:password},{withCredentials: true})
         console.log(response)
         if(response.data.user){
             cookie.setUserCookie(response.data.user)

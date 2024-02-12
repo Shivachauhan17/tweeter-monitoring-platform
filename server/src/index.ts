@@ -29,6 +29,7 @@ app.use(cors({
 app.use(compression());
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.set("trust proxy", 1);
 
 app.use(
     session({
@@ -40,7 +41,9 @@ app.use(
           collectionName: 'sessions'
         }),
         cookie:{
-          maxAge:1000*60*60*24
+          maxAge:1000*60*60*24,
+          secure: true,
+        sameSite: "none" 
         }    
     })
     )

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const instance: AxiosInstance = axios.create({  
-    baseURL: 'http://localhost:8000',
+    baseURL: 'https://tweeter-monitoring-backend.onrender.com',
     timeout: 9000,
     headers: {
       'Content-Type': 'application/json',

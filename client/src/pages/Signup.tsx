@@ -30,7 +30,7 @@ const Signup:React.FC=()=>{
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
 
-        let response=await fetch('http://localhost:8000/signup',{
+        let response=await fetch('https://tweeter-monitoring-backend.onrender.com/signup',{
             method:'POST',
             body:JSON.stringify({username:username,password:password,confirm_password:confirm_password}),
             headers:{
