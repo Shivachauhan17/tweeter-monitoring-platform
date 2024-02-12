@@ -10,6 +10,7 @@ import logger from 'morgan';
 import session from 'express-session';
 import passport from 'passport';
 import passportConfig from './config/passport';
+import path from 'path';
 
 import mainRoute from './Routes/main';
 import dataRoute from './Routes/data';
@@ -17,6 +18,7 @@ import dataRoute from './Routes/data';
 dotenv.config()
 connectDB();
 const app:Application=express();
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(logger('dev'));
 app.use(cors({
@@ -48,7 +50,9 @@ passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.get('*',(req,res)=>{
+  res.render('index.html')
+})
 app.use('/',mainRoute);
 app.use('/',dataRoute);
 

@@ -13,11 +13,13 @@ const morgan_1 = __importDefault(require("morgan"));
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const passport_2 = __importDefault(require("./config/passport"));
+const path_1 = __importDefault(require("path"));
 const main_1 = __importDefault(require("./Routes/main"));
 const data_1 = __importDefault(require("./Routes/data"));
 dotenv_1.default.config();
 (0, database_1.default)();
 const app = (0, express_1.default)();
+app.use(express_1.default.static(path_1.default.join(__dirname, 'dist')));
 app.use((0, morgan_1.default)('dev'));
 app.use((0, cors_1.default)({
     origin: 'http://localhost:5173',
@@ -41,6 +43,9 @@ app.use((0, express_session_1.default)({
 (0, passport_2.default)(passport_1.default);
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
+app.get('*', (req, res) => {
+    res.render('index.html');
+});
 app.use('/', main_1.default);
 app.use('/', data_1.default);
 app.listen(8000, () => {
