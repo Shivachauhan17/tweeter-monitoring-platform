@@ -22,7 +22,7 @@ const app:Application=express();
 
 app.use(logger('dev'));
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://tweeter-monitoring-platform.vercel.app',
   credentials:true
 }));
 
