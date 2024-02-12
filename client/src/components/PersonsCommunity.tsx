@@ -53,7 +53,7 @@ const PersonsCommunity:React.FC=()=>{
                                 dispatch(currentUserAction.setIsUserMonitorTrue())
                                 }}  key={index} className='pcList1__item'>
                                 <img className="pcList1__img" src={item?.profile}/>
-                                <h4  className='pcList1__name'>{item.person}</h4>
+                                <h5  className='pcList1__name'>{item.person}</h5>
                             </li>
                         )
                     })
@@ -69,10 +69,10 @@ const PersonsCommunity:React.FC=()=>{
                         keywords.map((item,index)=>{
                             return(
                                 <li key={index} className='pcList2__item'>
-                                    <h4 onClick={()=>{
+                                    <h5 onClick={()=>{
                                         dispatch(setMonitoringUser(item))
                                         dispatch(currentUserAction.setIsUserMonitorFalse())
-                                        }} >{item}</h4>
+                                        }} >{item}</h5>
                                 </li>
                             )
                         })

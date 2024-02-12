@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const data_1 = __importDefault(require("../controllers/data"));
+const dataRoute = (0, express_1.Router)();
+dataRoute.post('/getAllUser', data_1.default.getAllUser);
+dataRoute.post('/getAllKeywords', data_1.default.getAllKeywords);
+dataRoute.post('/get_vNvPercentage', data_1.default.get_vNvPercentage);
+dataRoute.post('/addUser', data_1.default.addUser);
+dataRoute.post('/deleteUser', data_1.default.deleteUser);
+dataRoute.post('/addKeyword', data_1.default.addKeyword);
+dataRoute.post('/deleteKeyword', data_1.default.deleteKeyword);
+dataRoute.post('/right4al', data_1.default.right4al);
+dataRoute.post('/reverse4al', data_1.default.reverse4al);
+dataRoute.post('/getMyAllTweets', data_1.default.getMyAllTweets);
+dataRoute.post('/getDateFilteredTweets', data_1.default.getDateFilteredTweets);
+dataRoute.post('/violentFilterTweets', data_1.default.violentFilterTweets);
+dataRoute.post('/getMyMonitoringUsers', data_1.default.getMyMonitoringUsers);
+exports.default = dataRoute;

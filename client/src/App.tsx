@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Main from './pages/Main';
 import './scss/main.scss';
-import AddUserForm from './components/AddUserForm';
 
 const App:React.FC=()=> {
   return (

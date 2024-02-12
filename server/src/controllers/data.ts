@@ -62,6 +62,8 @@ const dataController={
                 //             exec();
             
             if(req.body.isUserMonitor){
+                console.log(req.body.monitoringUser)
+                console.log(req.body.admin_user)
 
                 const data=await Tweet
                             .find({label:{$ne:null},admin_user:req.body.admin_user,username:req.body.monitoringUser,is_keyword:false})
@@ -69,7 +71,7 @@ const dataController={
                             .skip((req.body.page-1)*pageLimit)
                             .limit(pageLimit).
                             exec();
-
+                console.log(data)
                 if (data.length>0){
                     const newdata:SingleTweet[]=[];
 
@@ -101,7 +103,7 @@ const dataController={
                     .skip((req.body.page-1)*pageLimit)
                     .limit(pageLimit).
                     exec();
-
+                    console.log(data)
                     if (data.length>0){
                         const newdata:SingleTweet[]=[];
 

@@ -1,12 +1,10 @@
 import React,{memo,useEffect} from "react";
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Logo from '../components/Logo'; 
-import axios,{AxiosResponse} from 'axios';
 import {RootState} from '../store/reducer';
 import cookie from '../components/Cookie';
-import {setUsername} from '../store/user/userActions';
 
 export interface UserResponse{
     user:string
@@ -17,7 +15,6 @@ const LoginSignup:React.FC=()=>{
     console.log(username)
     const cookies=cookie();
     const navigate=useNavigate();
-    const dispatch=useDispatch();
 
     useEffect(()=>{
         if(cookies.getUserCookie()!==null && cookies.getUserCookie()!==undefined){

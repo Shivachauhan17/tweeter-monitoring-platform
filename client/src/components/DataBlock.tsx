@@ -1,10 +1,9 @@
-import React,{memo,useState,ChangeEvent, useEffect} from "react";
+import React,{memo,useState, useEffect} from "react";
 import { SlDislike,SlLike } from "react-icons/sl";
 import { IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
 import { useSelector,useDispatch } from "react-redux";
 import { RootState } from "../store/reducer";
 import axios from "../axios/createAxios";
-import dateActions from "../store/mainPage/date/dateActions";
 import Cookie  from "../components/Cookie";
 import currentUserActions  from '../store/mainPage/currentUser/currentUserActions';
 
@@ -13,39 +12,39 @@ const DataBlock:React.FC=()=>{
     const cookie=Cookie();
     const dispatch=useDispatch();
     const userdata=useSelector((state:RootState)=>state.currentUser.data);
-    const startDate=useSelector((state:RootState)=>state.date.startDate);
-    const endDate=useSelector((state:RootState)=>state.date.endDate);
+    // const startDate=useSelector((state:RootState)=>state.date.startDate);
+    // const endDate=useSelector((state:RootState)=>state.date.endDate);
     const page=useSelector((state:RootState)=>state.currentUser.page);
     const monitoringUser=useSelector((state:RootState)=>state.user.monitoringUser)
     const isUserMonitor=useSelector((state:RootState)=>state.currentUser.isUserMonitor)
 
 
     const [onlyViolents,setOnlyViolents]=useState(false)
-    const handleStartDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
-        dispatch(dateActions.setStartDate(e.target.value));
+    // const handleStartDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
+    //     dispatch(dateActions.setStartDate(e.target.value));
 
-    };
+    // };
 
-    const handleEndDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
-        dispatch(dateActions.setEndDate(e.target.value));
+    // const handleEndDateChange=(e:ChangeEvent<HTMLInputElement>)=>{
+    //     dispatch(dateActions.setEndDate(e.target.value));
 
-    };
+    // };
 
 
-    const handleFilterSubmit=async (e:React.FormEvent<HTMLFormElement>):Promise<void>=>{
-        e.preventDefault();
-        const response= await axios.post('/getDateFilteredTweets',
-        {
-            startDate:startDate,
-            endDate:endDate,
-            monitoringUser:monitoringUser,
-            page:page,
-            admin_user:cookie.getUserCookie()
-        });
+    // const handleFilterSubmit=async (e:React.FormEvent<HTMLFormElement>):Promise<void>=>{
+    //     e.preventDefault();
+    //     const response= await axios.post('/getDateFilteredTweets',
+    //     {
+    //         startDate:startDate,
+    //         endDate:endDate,
+    //         monitoringUser:monitoringUser,
+    //         page:page,
+    //         admin_user:cookie.getUserCookie()
+    //     });
 
-        // dispatch(currentUserActions.setData(response.data.data));
+    //     // dispatch(currentUserActions.setData(response.data.data));
 
-    };
+    // };
 
     const handleViolentFilter=async ():Promise<void>=>{
         if(onlyViolents){

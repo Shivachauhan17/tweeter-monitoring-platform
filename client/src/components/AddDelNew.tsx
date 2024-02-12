@@ -1,4 +1,4 @@
-import React,{memo} from 'react';
+import {memo} from 'react';
 import addDelActions from '../store/mainPage/popAddDelForms/addDelFormsActions';
 import AddUserForm from './AddUserForm';
 import DelUserForm from './DelUserForm';

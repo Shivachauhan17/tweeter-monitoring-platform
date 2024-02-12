@@ -1,8 +1,6 @@
-import React,{memo,useEffect,useState} from 'react';
+import React,{memo,useEffect} from 'react';
 import {Pie,PieChart,Tooltip} from 'recharts';
-import { RiAddBoxLine,RiDeleteBinLine } from "react-icons/ri";
 import {useSelector,useDispatch} from 'react-redux';
-import {CurrentUser} from '../store/mainPage/currentUser/currentUserReducer';
 import {RootState} from '../store/reducer';
 import currentUserActions  from '../store/mainPage/currentUser/currentUserActions';
 import cookies from '../components/Cookie';
@@ -30,6 +28,7 @@ const CurrentPerson:React.FC=()=>{
 
   const fetchMonitoringUserData=async():Promise<void>=>{
       const response=await axios.post('/getMyAllTweets',{page:page,isUserMonitor:isUserMonitor,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
+      console.log(response)
       dispatch(currentUserActions.setData(response.data.data));
     
 
