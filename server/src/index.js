@@ -21,7 +21,7 @@ const app = (0, express_1.default)();
 // app.use(express.static(path.join(__dirname, 'dist')));
 app.use((0, morgan_1.default)('dev'));
 app.use((0, cors_1.default)({
-    origin: 'https://tweeter-monitoring-platform.vercel.app',
+    origin: '*',
     credentials: true
 }));
 app.use((0, compression_1.default)());
@@ -46,7 +46,7 @@ app.use((0, express_session_1.default)({
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // app.get('*',(req,res)=>{
-//   res.render('index.html')
+//   res.sendFile(__dirname+ '/dist'+'/index.html')
 // })
 app.use('/', main_1.default);
 app.use('/', data_1.default);

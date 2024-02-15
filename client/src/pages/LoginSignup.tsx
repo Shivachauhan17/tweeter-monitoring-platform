@@ -1,6 +1,6 @@
 import React,{memo,useEffect} from "react";
 import {useSelector} from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Logo from '../components/Logo'; 
 import {RootState} from '../store/reducer';
@@ -18,7 +18,7 @@ const LoginSignup:React.FC=()=>{
 
     useEffect(()=>{
         if(cookies.getUserCookie()!==null && cookies.getUserCookie()!==undefined){
-            navigate('/home');
+            navigate('/home_');
         }
     },[])
     
@@ -48,8 +48,8 @@ const LoginSignup:React.FC=()=>{
                             <h3 className="">Login To Profile</h3>
                         </div>
                         <div className="lspage__buttons">
-                            <a href='/login'><button type="button" className="btn btn-outline-primary" >Login</button></a>
-                            <a href='/signup' > <button type="button" className="btn btn-outline-success">Signup</button></a>
+                            <Link to='/login_'><button type="button" className="btn btn-outline-primary" >Login</button></Link>
+                            <Link to='/signup_' > <button type="button" className="btn btn-outline-success">Signup</button></Link>
                         </div>
                         
                         <div className="">

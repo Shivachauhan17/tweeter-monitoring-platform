@@ -22,7 +22,7 @@ const app:Application=express();
 
 app.use(logger('dev'));
 app.use(cors({
-  origin: 'https://tweeter-monitoring-platform.vercel.app',
+  origin: '*',
   credentials:true
 }));
 
@@ -54,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // app.get('*',(req,res)=>{
-//   res.render('index.html')
+//   res.sendFile(__dirname+ '/dist'+'/index.html')
 // })
 app.use('/',mainRoute);
 app.use('/',dataRoute);

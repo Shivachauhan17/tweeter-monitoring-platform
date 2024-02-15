@@ -43,7 +43,7 @@ const Signup:React.FC=()=>{
         response=await response.json();
 
         if((response as any).error===null){
-            navigate('/login');
+            navigate('/login_');
         }
     }
     

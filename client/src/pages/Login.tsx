@@ -35,7 +35,7 @@ const Login:React.FC=()=>{
         if(response.data.user){
             cookie.setUserCookie(response.data.user)
             console.log(cookie.getUserCookie())
-            navigate('/home')
+            navigate('/home_')
         }
         else{
             navigate('/')
