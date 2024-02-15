@@ -22,11 +22,10 @@ const app:Application=express();
 
 app.use(logger('dev'));
 app.use(cors({
-  origin: '*',
+  origin: 'https://tweeter-monitoring-platform.vercel.app',
   credentials:true
 }));
 
-app.use(compression());
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.set("trust proxy", 1);
