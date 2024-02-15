@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
-const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const database_1 = __importDefault(require("./config/database"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -21,10 +20,9 @@ const app = (0, express_1.default)();
 // app.use(express.static(path.join(__dirname, 'dist')));
 app.use((0, morgan_1.default)('dev'));
 app.use((0, cors_1.default)({
-    origin: '*',
+    origin: 'https://tweeter-monitoring-platform.vercel.app',
     credentials: true
 }));
-app.use((0, compression_1.default)());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.set("trust proxy", 1);
