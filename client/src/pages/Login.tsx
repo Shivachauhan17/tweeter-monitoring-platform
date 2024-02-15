@@ -48,7 +48,11 @@ const Login:React.FC=()=>{
             <Logo/>
             <div className="signupContainer">
                 <div className="signupBlock"> 
-
+                <div style={{position:'fixed',top:'100px',left:'300px'}}>
+                    <h4>for demo use</h4>
+                    <h6>username:Shivachauhan17</h6>
+                    <h6>password:Shiva@123</h6>
+                </div>
                     <div className="signupBlock__imgbg">
                         <h2 style={{color:'white'}} className="signupBlock__head">Let's Explore</h2>
                         <h6 style={{color:'#563517'}} className="signupBlock__head2">Login! lets show you what's ahead</h6>
