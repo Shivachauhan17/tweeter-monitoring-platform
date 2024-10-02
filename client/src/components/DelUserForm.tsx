@@ -14,7 +14,7 @@ const DelUserForm:React.FC=()=>{
     const delUser=useSelector((state:RootState)=>state.currentUser.deleteUser);
     const handleUserDelSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        const response=await axios.post('/deleteUser',{userToDel:delUser,admin_user:cookie.getUserCookie()});
+        const response=await axios.post('/deleteUser',{userToDel:delUser,admin_user:cookie.getUserCookie()},{withCredentials:true});
         if(response.status===200){
             dispatch(addDelActions.popDelUser())
         }

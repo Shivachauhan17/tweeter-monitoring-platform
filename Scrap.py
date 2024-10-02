@@ -39,11 +39,11 @@ def find(keyword):
     driver.get("https://twitter.com/login")
 
     username = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[name="text"]')))
-    username.send_keys("satyam_joon")
+    username.send_keys("PranavSinghRaj9")
     username.send_keys(Keys.ENTER)
 
     password = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[name="password"]')))
-    password.send_keys('shubhamk319')
+    password.send_keys('Pranav@07')
     password.send_keys(Keys.ENTER)
 
     search_box = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[data-testid="SearchBox_Search_Input"]')))

@@ -1,19 +1,16 @@
 import express,{Request, Response, NextFunction} from 'express';
 import { Application } from 'express';
 
-import MongoStore from 'connect-mongo';
-import compression from 'compression';
 import cors from 'cors';
 import connectDB from './config/database';
 import dotenv from 'dotenv';
 import logger from 'morgan';
-import session from 'express-session';
-import passport from 'passport';
-import passportConfig from './config/passport';
-import path from 'path';
+import jwt from 'jsonwebtoken'
+import cookieParser  from 'cookie-parser'
 
 import mainRoute from './Routes/main';
 import dataRoute from './Routes/data';
+import { Cookie } from 'express-session';
 
 dotenv.config()
 connectDB();
@@ -22,7 +19,7 @@ const app:Application=express();
 
 app.use(logger('dev'));
 app.use(cors({
-  origin: 'https://tweeter-monitoring-platform.vercel.app',
+  origin: ['https://tweeter-monitoring-platform.vercel.app',"http://localhost:5173"],
   credentials:true
 }));
 
@@ -30,32 +27,51 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.set("trust proxy", 1);
 
-app.use(
-    session({
-        secret: 'keyboard cat',
-        resave: false,//don't save session is unmodified
-        saveUninitialized:true,//don't create session untill something is stores
-        store: MongoStore.create({
-          mongoUrl: "mongodb+srv://Shivag:shivashiva@cluster0.mz5u2w1.mongodb.net/tweeter?retryWrites=true&w=majority",
-          collectionName: 'sessions'
-        }),
-        cookie:{
-          maxAge:1000*60*60*24,
-          secure: true,
-        sameSite: "none" 
-        }    
-    })
-    )
+app.use(cookieParser())
 
+// Define your TokenData interface
+interface TokenData {
+  username: string;
+  id: string;
+  // Add other properties as needed
+}
 
-passportConfig(passport);
-app.use(passport.initialize());
-app.use(passport.session());
+// Extend the Request interface to include user property
+export interface IRequest extends Request {
+  user?: TokenData;
+}
 
-// app.get('*',(req,res)=>{
-//   res.sendFile(__dirname+ '/dist'+'/index.html')
-// })
 app.use('/',mainRoute);
+app.use(async (req: Request, res: Response, next: NextFunction)=> {
+  try {
+    console.log(req.cookies)
+      const token = req.cookies.access_token;
+      console.log("token:",token)
+      if (!token) {
+          return res.status(401).json({ error: 'No token provided.' });
+      }
+
+      let tokendata: TokenData | null = null;
+      try {
+          tokendata = await jwt.verify(token, "Secret") as TokenData;
+      } catch (e) {
+          console.log(e);
+          return res.status(400).json({ msg: 'Wrong credentials.' });
+      }
+
+      if (!tokendata) {
+          return res.status(400).json({ msg: 'Wrong credentials.' });
+      }
+
+      req.user = tokendata; // Now req.user is properly typed
+      console.log("req.user:", req.user);
+      next();
+  } catch (e) {
+      console.log(e);
+      return res.status(500).json({ msg: 'Server side errors' });
+  }
+})
+
 app.use('/',dataRoute);
 
 app.listen(8000,()=>{

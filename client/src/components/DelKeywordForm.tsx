@@ -14,7 +14,7 @@ const DelUserForm:React.FC=()=>{
     const delKeyword=useSelector((state:RootState)=>state.currentUser.deleteKeyword);
     const handleKeywordDelSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        const response=await axios.post('/deleteKeyword',{keywordToDel:delKeyword,admin_user:cookie.getUserCookie()});
+        const response=await axios.post('/deleteKeyword',{keywordToDel:delKeyword,admin_user:cookie.getUserCookie()},{withCredentials:true});
         if(response.status===200){
             dispatch(addDelActions.popDelKeyword())
         }

@@ -4,6 +4,7 @@ import Tweet from '../models/tweets';
 import {IUser} from '../models/user';
 import Userkeyword from '../models/user_keyword';
 import AlTweet from '../models/alTweet';
+import { IRequest } from '..';
 
 export interface SingleTweet{
     label:string,
@@ -21,9 +22,9 @@ export interface MyMUser{
 
 
 const dataController={
-    getAllUser:async(req:Request,res:Response,next:NextFunction)=>{
+    getAllUser:async(req:IRequest,res:Response,next:NextFunction)=>{
         try{
-            const result=await Userkeyword.distinct('username', { is_keyword: false,admin_user:req.body.username })
+            const result=await Userkeyword.distinct('username', { is_keyword: false,admin_user:req.user?.username })
             res.status(200).json({data:result});
         }
         catch(err){
@@ -31,9 +32,9 @@ const dataController={
             return res.status(500).json({data:null});
         }
     },
-    getAllKeywords:async(req:Request,res:Response,next:NextFunction)=>{
+    getAllKeywords:async(req:IRequest,res:Response,next:NextFunction)=>{
         try{
-            const result=await Userkeyword.distinct('keyword', { is_keyword: true,admin_user:req.body.admin_user})
+            const result=await Userkeyword.distinct('keyword', { is_keyword: true,admin_user:req.user?.username})
             const newData:AllKeywords[]=[]
             if(result.length>0){
                 for(let i=0;i<result.length;i++){
@@ -50,7 +51,7 @@ const dataController={
             return res.status(500).json({data:null});
         }
     },
-    getMyAllTweets:async(req:Request,res:Response,next:NextFunction)=>{
+    getMyAllTweets:async(req:IRequest,res:Response,next:NextFunction)=>{
         try{
             const pageLimit=5;
             // if(req.user!==null && req.user!==undefined){
@@ -63,10 +64,10 @@ const dataController={
             
             if(req.body.isUserMonitor){
                 console.log(req.body.monitoringUser)
-                console.log(req.body.admin_user)
+                console.log(req.user?.username)
 
                 const data=await Tweet
-                            .find({label:{$ne:null},admin_user:req.body.admin_user,username:req.body.monitoringUser,is_keyword:false})
+                            .find({label:{$ne:null},admin_user:req.user?.username,username:req.body.monitoringUser,is_keyword:false})
                             .sort({utcTime:-1})
                             .skip((req.body.page-1)*pageLimit)
                             .limit(pageLimit).
@@ -98,7 +99,7 @@ const dataController={
                 return res.status(200).json({data:null});}
                 else{
                     const data=await Tweet
-                    .find({label:{$ne:null},admin_user:req.body.admin_user,keyword:req.body.monitoringUser,is_keyword:true})
+                    .find({label:{$ne:null},admin_user:req.user?.username,keyword:req.body.monitoringUser,is_keyword:true})
                     .sort({utcTime:-1})
                     .skip((req.body.page-1)*pageLimit)
                     .limit(pageLimit).
@@ -137,7 +138,7 @@ const dataController={
         }
     },
 
-    get_vNvPercentage:async (req:Request,res:Response,next:NextFunction)=>{
+    get_vNvPercentage:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
             // const cutoffDate = new Date();
             // cutoffDate.setHours(cutoffDate.getHours() - 24);
@@ -146,7 +147,7 @@ const dataController={
                     { 
                         // utcTime: { $gte: cutoffDate },
                         label:'violent',
-                        admin_user:req.body.admin_user,
+                        admin_user:req.user?.username,
                         username:req.body.monitoringUser 
                     })
                     .exec();
@@ -156,7 +157,7 @@ const dataController={
                     { 
                         // utcTime: { $gte: cutoffDate },
                         label:'non-violent',
-                        admin_user:req.body.admin_user,
+                        admin_user:req.user?.username,
                         username:req.body.monitoringUser 
                     })
                     .exec();
@@ -172,7 +173,7 @@ const dataController={
                     { 
                         // utcTime: { $gte: cutoffDate },
                         label:'violent',
-                        admin_user:req.body.admin_user,
+                        admin_user:req.user?.username,
                         keyword:req.body.monitoringUser 
                     })
                     .exec();
@@ -182,7 +183,7 @@ const dataController={
                     { 
                         // utcTime: { $gte: cutoffDate },
                         label:'non-violent',
-                        admin_user:req.body.admin_user,
+                        admin_user:req.user?.username,
                         keyword:req.body.monitoringUser 
                     })
                     .exec();
@@ -200,10 +201,10 @@ const dataController={
             return res.status(500).json({data:{}});
         }
     },
-    addUser:async (req:Request,res:Response,next:NextFunction)=>{
+    addUser:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
             const newDoc=new Userkeyword({
-                admin_user:req.body.admin_user,
+                admin_user:req.user?.username,
                 username:req.body.userToAdd,
                 keyword:"",
                 is_keyword:false
@@ -217,9 +218,9 @@ const dataController={
         }
     },
 
-    deleteUser:async (req:Request,res:Response,next:NextFunction)=>{
+    deleteUser:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
-            const data=await Userkeyword.deleteOne({username:req.body.userToDel,admin_user:req.body.admin_user});
+            const data=await Userkeyword.deleteOne({username:req.body.userToDel,admin_user:req.user?.username});
             res.status(200).json({data:data});
         }
         catch(err){
@@ -228,10 +229,10 @@ const dataController={
         }
     },
 
-    addKeyword:async (req:Request,res:Response,next:NextFunction)=>{
+    addKeyword:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
             const newDoc=new Userkeyword({
-                admin_user:req.body.admin_user,
+                admin_user:req.user?.username,
                 username:"",
                 keyword:req.body.keywordToAdd,
                 is_keyword:true
@@ -245,9 +246,9 @@ const dataController={
         }
     },
     
-    deleteKeyword:async (req:Request,res:Response,next:NextFunction)=>{
+    deleteKeyword:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
-            const data=await Userkeyword.deleteOne({keyword:req.body.keywordToDel,admin_user:req.body.admin_user});
+            const data=await Userkeyword.deleteOne({keyword:req.body.keywordToDel,admin_user:req.user?.username});
             res.status(200).json({data:data});
         }
         catch(err){
@@ -255,7 +256,7 @@ const dataController={
             return res.status(500).json({data:null});
         }
     },
-    right4al:async (req:Request,res:Response,next:NextFunction)=>{
+    right4al:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
             const result = await Tweet.findById(new mongoose.Types.ObjectId(req.body.id)).select('-_id');
             
@@ -284,7 +285,7 @@ const dataController={
                 return res.status(500).json({data:{}});
             }
     },
-    reverse4al:async (req:Request,res:Response,next:NextFunction)=>{
+    reverse4al:async (req:IRequest,res:Response,next:NextFunction)=>{
         try{
         const result = await Tweet.findById(new mongoose.Types.ObjectId(req.body.id)).select('-_id');
         let labelValue="";
@@ -320,7 +321,7 @@ const dataController={
         }
     },
 
-    getDateFilteredTweets:async(req:Request,res:Response,next:NextFunction)=>{
+    getDateFilteredTweets:async(req:IRequest,res:Response,next:NextFunction)=>{
         console.log(req.body);
         try{
             const pageLimit=5;
@@ -338,7 +339,7 @@ const dataController={
                 //             exec();
 
                 const data=await Tweet
-                            .find({label:{$ne:null},admin_user:req.body.admin_user,username:req.body.monitoringUser
+                            .find({label:{$ne:null},admin_user:req.user?.username,username:req.body.monitoringUser
                                 // utcTime:{
                                 //     $gte:new Date(req.body.startDate),
                                 //     $lte:new Date(req.body.endDate)
@@ -382,7 +383,7 @@ const dataController={
                 return res.status(500).json({data:""});
             }
     },
-    violentFilterTweets:async(req:Request,res:Response,next:NextFunction)=>{
+    violentFilterTweets:async(req:IRequest,res:Response,next:NextFunction)=>{
         try{
             const pageLimit=5;
             // if(req.user!==null && req.user!==undefined){
@@ -395,7 +396,7 @@ const dataController={
 
                 if(req.body.isUserMonitor){
                 const data=await Tweet
-                            .find({label:'violent',admin_user:req.body.admin_user,username:req.body.monitoringUser})
+                            .find({label:'violent',admin_user:req.user?.username,username:req.body.monitoringUser})
                             .sort({utcTime:-1})
                             .skip((req.body.page-1)*pageLimit)
                             .limit(pageLimit).
@@ -425,7 +426,7 @@ const dataController={
                 }
                 else{
                     const data=await Tweet
-                            .find({label:'violent',admin_user:req.body.admin_user,keyword:'riot'})
+                            .find({label:'violent',admin_user:req.user?.username,keyword:'riot'})
                             .sort({utcTime:-1})
                             .skip((req.body.page-1)*pageLimit)
                             .limit(pageLimit).
@@ -462,10 +463,10 @@ const dataController={
         }
     },
 
-    getMyMonitoringUsers:async(req:Request,res:Response,next:NextFunction)=>{
+    getMyMonitoringUsers:async(req:IRequest,res:Response,next:NextFunction)=>{
         try{
             
-                const data=await Userkeyword.distinct('username',{admin_user:req.body.admin_user,is_keyword:false});
+                const data=await Userkeyword.distinct('username',{admin_user:req.user?.username,is_keyword:false});
                 // console.log(data)
                 const newdata:MyMUser[]=[];
                 if (data.length>0){

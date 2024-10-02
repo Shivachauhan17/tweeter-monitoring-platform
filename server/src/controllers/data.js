@@ -20,8 +20,9 @@ const alTweet_1 = __importDefault(require("../models/alTweet"));
 ;
 const dataController = {
     getAllUser: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         try {
-            const result = yield user_keyword_1.default.distinct('username', { is_keyword: false, admin_user: req.body.username });
+            const result = yield user_keyword_1.default.distinct('username', { is_keyword: false, admin_user: (_a = req.user) === null || _a === void 0 ? void 0 : _a.username });
             res.status(200).json({ data: result });
         }
         catch (err) {
@@ -30,8 +31,9 @@ const dataController = {
         }
     }),
     getAllKeywords: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _b;
         try {
-            const result = yield user_keyword_1.default.distinct('keyword', { is_keyword: true, admin_user: req.body.admin_user });
+            const result = yield user_keyword_1.default.distinct('keyword', { is_keyword: true, admin_user: (_b = req.user) === null || _b === void 0 ? void 0 : _b.username });
             const newData = [];
             if (result.length > 0) {
                 for (let i = 0; i < result.length; i++) {
@@ -49,6 +51,7 @@ const dataController = {
         }
     }),
     getMyAllTweets: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _c, _d, _e;
         try {
             const pageLimit = 5;
             // if(req.user!==null && req.user!==undefined){
@@ -60,9 +63,9 @@ const dataController = {
             //             exec();
             if (req.body.isUserMonitor) {
                 console.log(req.body.monitoringUser);
-                console.log(req.body.admin_user);
+                console.log((_c = req.user) === null || _c === void 0 ? void 0 : _c.username);
                 const data = yield tweets_1.default
-                    .find({ label: { $ne: null }, admin_user: req.body.admin_user, username: req.body.monitoringUser, is_keyword: false })
+                    .find({ label: { $ne: null }, admin_user: (_d = req.user) === null || _d === void 0 ? void 0 : _d.username, username: req.body.monitoringUser, is_keyword: false })
                     .sort({ utcTime: -1 })
                     .skip((req.body.page - 1) * pageLimit)
                     .limit(pageLimit).
@@ -89,7 +92,7 @@ const dataController = {
             }
             else {
                 const data = yield tweets_1.default
-                    .find({ label: { $ne: null }, admin_user: req.body.admin_user, keyword: req.body.monitoringUser, is_keyword: true })
+                    .find({ label: { $ne: null }, admin_user: (_e = req.user) === null || _e === void 0 ? void 0 : _e.username, keyword: req.body.monitoringUser, is_keyword: true })
                     .sort({ utcTime: -1 })
                     .skip((req.body.page - 1) * pageLimit)
                     .limit(pageLimit).
@@ -121,6 +124,7 @@ const dataController = {
         }
     }),
     get_vNvPercentage: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _f, _g, _h, _j;
         try {
             // const cutoffDate = new Date();
             // cutoffDate.setHours(cutoffDate.getHours() - 24);
@@ -128,14 +132,14 @@ const dataController = {
                 let violents = yield tweets_1.default.countDocuments({
                     // utcTime: { $gte: cutoffDate },
                     label: 'violent',
-                    admin_user: req.body.admin_user,
+                    admin_user: (_f = req.user) === null || _f === void 0 ? void 0 : _f.username,
                     username: req.body.monitoringUser
                 })
                     .exec();
                 let nonViolents = yield tweets_1.default.countDocuments({
                     // utcTime: { $gte: cutoffDate },
                     label: 'non-violent',
-                    admin_user: req.body.admin_user,
+                    admin_user: (_g = req.user) === null || _g === void 0 ? void 0 : _g.username,
                     username: req.body.monitoringUser
                 })
                     .exec();
@@ -148,14 +152,14 @@ const dataController = {
                 let violents = yield tweets_1.default.countDocuments({
                     // utcTime: { $gte: cutoffDate },
                     label: 'violent',
-                    admin_user: req.body.admin_user,
+                    admin_user: (_h = req.user) === null || _h === void 0 ? void 0 : _h.username,
                     keyword: req.body.monitoringUser
                 })
                     .exec();
                 let nonViolents = yield tweets_1.default.countDocuments({
                     // utcTime: { $gte: cutoffDate },
                     label: 'non-violent',
-                    admin_user: req.body.admin_user,
+                    admin_user: (_j = req.user) === null || _j === void 0 ? void 0 : _j.username,
                     keyword: req.body.monitoringUser
                 })
                     .exec();
@@ -171,9 +175,10 @@ const dataController = {
         }
     }),
     addUser: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _k;
         try {
             const newDoc = new user_keyword_1.default({
-                admin_user: req.body.admin_user,
+                admin_user: (_k = req.user) === null || _k === void 0 ? void 0 : _k.username,
                 username: req.body.userToAdd,
                 keyword: "",
                 is_keyword: false
@@ -187,8 +192,9 @@ const dataController = {
         }
     }),
     deleteUser: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _l;
         try {
-            const data = yield user_keyword_1.default.deleteOne({ username: req.body.userToDel, admin_user: req.body.admin_user });
+            const data = yield user_keyword_1.default.deleteOne({ username: req.body.userToDel, admin_user: (_l = req.user) === null || _l === void 0 ? void 0 : _l.username });
             res.status(200).json({ data: data });
         }
         catch (err) {
@@ -197,9 +203,10 @@ const dataController = {
         }
     }),
     addKeyword: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _m;
         try {
             const newDoc = new user_keyword_1.default({
-                admin_user: req.body.admin_user,
+                admin_user: (_m = req.user) === null || _m === void 0 ? void 0 : _m.username,
                 username: "",
                 keyword: req.body.keywordToAdd,
                 is_keyword: true
@@ -213,8 +220,9 @@ const dataController = {
         }
     }),
     deleteKeyword: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _o;
         try {
-            const data = yield user_keyword_1.default.deleteOne({ keyword: req.body.keywordToDel, admin_user: req.body.admin_user });
+            const data = yield user_keyword_1.default.deleteOne({ keyword: req.body.keywordToDel, admin_user: (_o = req.user) === null || _o === void 0 ? void 0 : _o.username });
             res.status(200).json({ data: data });
         }
         catch (err) {
@@ -281,6 +289,7 @@ const dataController = {
         }
     }),
     getDateFilteredTweets: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _p;
         console.log(req.body);
         try {
             const pageLimit = 5;
@@ -297,12 +306,12 @@ const dataController = {
             //             .limit(pageLimit).
             //             exec();
             const data = yield tweets_1.default
-                .find({ label: { $ne: null }, admin_user: req.body.admin_user, username: req.body.monitoringUser
+                .find({ label: { $ne: null }, admin_user: (_p = req.user) === null || _p === void 0 ? void 0 : _p.username, username: req.body.monitoringUser
                 // utcTime:{
                 //     $gte:new Date(req.body.startDate),
                 //     $lte:new Date(req.body.endDate)
                 //         }
-            })
+             })
                 .sort({ utcTime: -1 })
                 .skip((req.body.page - 1) * pageLimit)
                 .limit(pageLimit).
@@ -334,6 +343,7 @@ const dataController = {
         }
     }),
     violentFilterTweets: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _q, _r;
         try {
             const pageLimit = 5;
             // if(req.user!==null && req.user!==undefined){
@@ -345,7 +355,7 @@ const dataController = {
             //             exec();
             if (req.body.isUserMonitor) {
                 const data = yield tweets_1.default
-                    .find({ label: 'violent', admin_user: req.body.admin_user, username: req.body.monitoringUser })
+                    .find({ label: 'violent', admin_user: (_q = req.user) === null || _q === void 0 ? void 0 : _q.username, username: req.body.monitoringUser })
                     .sort({ utcTime: -1 })
                     .skip((req.body.page - 1) * pageLimit)
                     .limit(pageLimit).
@@ -371,7 +381,7 @@ const dataController = {
             }
             else {
                 const data = yield tweets_1.default
-                    .find({ label: 'violent', admin_user: req.body.admin_user, keyword: 'riot' })
+                    .find({ label: 'violent', admin_user: (_r = req.user) === null || _r === void 0 ? void 0 : _r.username, keyword: 'riot' })
                     .sort({ utcTime: -1 })
                     .skip((req.body.page - 1) * pageLimit)
                     .limit(pageLimit).
@@ -402,8 +412,9 @@ const dataController = {
         }
     }),
     getMyMonitoringUsers: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _s;
         try {
-            const data = yield user_keyword_1.default.distinct('username', { admin_user: req.body.admin_user, is_keyword: false });
+            const data = yield user_keyword_1.default.distinct('username', { admin_user: (_s = req.user) === null || _s === void 0 ? void 0 : _s.username, is_keyword: false });
             // console.log(data)
             const newdata = [];
             if (data.length > 0) {

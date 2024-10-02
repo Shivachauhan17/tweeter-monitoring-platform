@@ -4,6 +4,7 @@ import Logo from '../components/Logo';
 import {useSelector,useDispatch} from 'react-redux';
 import { RootState } from "../store/reducer";
 import {signupFormSetUsername,signupFormSetPassword,signupFormSetConfirmPass} from '../store/signupForm/signupAction';
+import api from "../axios/api";
 
 const Signup:React.FC=()=>{
     const navigate=useNavigate();
@@ -29,21 +30,17 @@ const Signup:React.FC=()=>{
 
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
-
-        let response=await fetch('https://tweeter-monitoring-backend.onrender.com/signup',{
-            method:'POST',
-            body:JSON.stringify({username:username,password:password,confirm_password:confirm_password}),
-            headers:{
-                'Content-Type':'application/json',
-
-            },
-            credentials:'include'
-        })
-
-        response=await response.json();
-
-        if((response as any).error===null){
-            navigate('/login_');
+        try{
+            const response=await api.post<{username:string}>('/signup',
+                {username:username,password:password,confirm_password:confirm_password},
+                {withCredentials:true})
+            if(response.status===200){
+                localStorage.setItem("username",response.data.username)
+                navigate('/home_');
+            }
+        }
+        catch(e){
+            console.log(e)
         }
     }
     

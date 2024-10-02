@@ -14,7 +14,7 @@ const AddKeywordForm:React.FC=()=>{
     const addKeyword=useSelector((state:RootState)=>state.currentUser.addKeyword);
     const handleKeywordAddSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        const response=await axios.post('/addKeyword',{keywordToAdd:addKeyword,admin_user:cookie.getUserCookie()});
+        const response=await axios.post('/addKeyword',{keywordToAdd:addKeyword,admin_user:cookie.getUserCookie()},{withCredentials:true});
         if(response.status===200)
             dispatch(addDelActions.popAddKeyword())
     }

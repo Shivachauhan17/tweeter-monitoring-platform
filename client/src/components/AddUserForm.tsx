@@ -14,7 +14,7 @@ const AddUserForm:React.FC=()=>{
     const addUser=useSelector((state:RootState)=>state.currentUser.addUser);
     const handleUserAddSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        const response=await axios.post('/addUser',{userToAdd:addUser,admin_user:cookie.getUserCookie()});
+        const response=await axios.post('/addUser',{userToAdd:addUser,admin_user:cookie.getUserCookie()},{withCredentials:true});
         if(response.status===200)
             dispatch(addDelActions.popAddUser())
     }
