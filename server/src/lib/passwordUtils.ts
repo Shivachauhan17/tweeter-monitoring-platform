@@ -1,25 +1,21 @@
+
 import crypto from 'crypto';
 
-interface saltHash{
-    salt:string,
-    hash:string
-};
+export function genPassword(password:string){
+    const salt=crypto.randomBytes(32).toString('hex');
+    const genHash=crypto.pbkdf2Sync(password,salt,10000,64,'sha512').toString('hex');
 
-export const genPassword=(password:string):saltHash=>{
-    
-    const salt:string=crypto.randomBytes(32).toString('hex');
-    const hash:string=crypto.pbkdf2Sync(password,salt,10000,64,'sha512').toString('hex');
 
     return{
-        salt,
-        hash
-    }
+        salt:salt,
+        hash:genHash
+    };
+}
+ 
 
+export function validPassword(password:string,hash:string,salt:string){
+
+    const hashVerify=crypto.pbkdf2Sync(password,salt,10000,64,'sha512').toString('hex');
+    return hash===hashVerify; 
 }
 
-export const validPassword=(password:string,salt:string,hash:string):boolean=>{
-
-    const hashVerify:string=crypto.pbkdf2Sync(password,salt,10000,64,'sha512').toString('hex');
-
-    return hash===hashVerify;
-}

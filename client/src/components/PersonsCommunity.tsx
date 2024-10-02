@@ -15,12 +15,12 @@ const PersonsCommunity:React.FC=()=>{
     const cookie=Cookie()
 
     const getMyMonitoringUsers=async()=>{
-        const response=await axios.post('/getMyMonitoringUsers',{admin_user:cookie.getUserCookie()});
+        const response=await axios.post('/getMyMonitoringUsers',{admin_user:cookie.getUserCookie()},{withCredentials:true});
         dispatch(allMActions.setAllUsers(response.data.data));
     };
 
     const getAllMyKeywords=async()=>{
-        const response=await axios.post('/getAllKeywords',{admin_user:cookie.getUserCookie()})
+        const response=await axios.post('/getAllKeywords',{admin_user:cookie.getUserCookie()},{withCredentials:true})
         if(response.data.data!==null){
             dispatch(currentUserAction.setAllKeywords(response.data.data))
         }

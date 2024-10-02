@@ -7,6 +7,7 @@ import Cookie from '../components/Cookie';
 import {UserResponse} from './LoginSignup'
 import axios,{AxiosResponse} from 'axios';
 import { useNavigate } from "react-router-dom";
+import api from "../axios/api";
 
 const Login:React.FC=()=>{
     const navigate=useNavigate()
@@ -30,15 +31,19 @@ const Login:React.FC=()=>{
     const handleSubmit=async(e: React.FormEvent<HTMLFormElement>):Promise<void>=>{
         e.preventDefault();
 
-        let response:AxiosResponse=await axios.post<UserResponse>('https://tweeter-monitoring-backend.onrender.com/login',{username:username,password:password},{withCredentials: true})
-        console.log(response)
-        if(response.data.user){
-            cookie.setUserCookie(response.data.user)
-            console.log(cookie.getUserCookie())
-            navigate('/home_')
+        e.preventDefault();
+        try{
+            const response=await api.post<{username:string}>('/login',
+                {username:username,password:password},
+                {withCredentials:true})
+            if(response.status===200){
+                console.log(response    )
+                localStorage.setItem("username",response.data.username)
+                navigate('/home_');
+            }
         }
-        else{
-            navigate('/')
+        catch(e){
+            console.log(e)
         }
         
     }

@@ -12,6 +12,7 @@ const DataBlock:React.FC=()=>{
     const cookie=Cookie();
     const dispatch=useDispatch();
     const userdata=useSelector((state:RootState)=>state.currentUser.data);
+    console.log(userdata)
     // const startDate=useSelector((state:RootState)=>state.date.startDate);
     // const endDate=useSelector((state:RootState)=>state.date.endDate);
     const page=useSelector((state:RootState)=>state.currentUser.page);
@@ -56,7 +57,7 @@ const DataBlock:React.FC=()=>{
             page:page,
             admin_user:cookie.getUserCookie(),
             isViolent:onlyViolents
-        });
+        },{withCredentials:true});
         if(response.data.data!==null){
         dispatch(currentUserActions.setData(response.data.data));
         }
@@ -65,7 +66,7 @@ const DataBlock:React.FC=()=>{
         }
         }
         else{
-            const response=await axios.post('/getMyAllTweets',{isUserMonitor:isUserMonitor,page:page,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()});
+            const response=await axios.post('/getMyAllTweets',{isUserMonitor:isUserMonitor,page:page,monitoringUser:monitoringUser,admin_user:cookie.getUserCookie()},{withCredentials:true});
         dispatch(currentUserActions.setData(response.data.data));
         }
 
@@ -126,13 +127,13 @@ const DataBlock:React.FC=()=>{
                                 onClick={
                                     async()=>{
                                         console.log('SlLike clicked');
-                                        await axios.post('/right4al',{id:item.tweet_id});
+                                        await axios.post('/right4al',{id:item.tweet_id},{withCredentials:true});
                                     }
                                         }/>
                                 <SlDislike className="dataItem__likeUnlike__l" onClick={
                                     async()=>{
                                         console.log('DisLike clicked');
-                                        await axios.post('/reverse4al',{id:item.tweet_id});
+                                        await axios.post('/reverse4al',{id:item.tweet_id},{withCredentials:true});
                                     }
                                     }/>
                             </div>
